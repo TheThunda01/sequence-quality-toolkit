@@ -1,0 +1,15 @@
+{
+  "files": [
+    {
+      "bytes": 51967,
+      "fastq_path": "ERR458493_first1000.fastq.gz",
+      "quality_encoding": "phred33",
+      "sample_id": "ERR458493_prefix",
+      "sha256": "4e380e55e0dfa36b1439c57138e123c59af4da2a289a0d2adfca085c2d6e76b4"
+    }
+  ],
+  "manifest_sha256": "7f457434f7ab66925c2f83c347bbc871b6d3fb29e88b13301031295b9e297b1e",
+  "mode": "fastq_input_byte_fingerprints",
+  "schema_version": "1.0",
+  "scope": "Exact sample-sheet and raw file bytes only; no FASTQ parsing or quality/identity judgement"
+}

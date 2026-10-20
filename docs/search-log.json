@@ -1,0 +1,288 @@
+{
+  "search_date": "2026-10-20",
+  "scope": "Bounded rapid review of FASTQ data integrity, explicit quality encoding, and practical reporting; no organism-specific biology, trimming implementation, or clinical use.",
+  "review_type": "Bounded rapid review, not an exhaustive systematic review",
+  "inclusion_criteria": [
+    "Primary software/methods publications directly relevant to the operational gap",
+    "Official data-provider/software documentation for precise contracts",
+    "Recent publication window 2022-01-01 to 2026-10-20, with clearly labeled foundational lookup"
+  ],
+  "exclusion_criteria": [
+    "Disease or organism applications without a direct reliability-method contribution",
+    "Broader pipelines or single-cell workflows outside scope",
+    "Preprints excluded from adopted evidence in this round"
+  ],
+  "searches": [
+    {
+      "source": "PubMed connector",
+      "label": "broad",
+      "query": "(FASTQ[Title/Abstract]) AND (\"quality control\"[Title/Abstract] OR validation[Title/Abstract]) AND (reproducibility[Title/Abstract] OR integrity[Title/Abstract] OR paired[Title/Abstract])",
+      "query_translation": "\"FASTQ\"[Title/Abstract] AND (\"quality control\"[Title/Abstract] OR \"validation\"[Title/Abstract]) AND (\"reproducibility\"[Title/Abstract] OR \"integrity\"[Title/Abstract] OR \"paired\"[Title/Abstract]) AND 2022/01/01:2026/10/20[Date - Publication]",
+      "date_type": "publication",
+      "date_from": "2022/01/01",
+      "date_to": "2026/10/20",
+      "sort": "publication_date",
+      "max_results": 10,
+      "offset": 0,
+      "total_results": 14,
+      "returned_count": 10,
+      "returned_pmids": [
+        "42860977",
+        "42595979",
+        "42511937",
+        "42308055",
+        "42079073",
+        "41230550",
+        "40149484",
+        "39763815",
+        "39278463",
+        "39048050"
+      ],
+      "next_offset": 10,
+      "has_more": true,
+      "pagination_limited": false,
+      "selection_limit": "First returned page only; broader result set was not exhaustively screened",
+      "warnings": []
+    },
+    {
+      "source": "PubMed connector",
+      "label": "narrow",
+      "query": "fastp[Title] OR fastplong[Title]",
+      "query_translation": "\"fastp\"[Title] AND 2022/01/01:2026/10/20[Date - Publication]",
+      "date_type": "publication",
+      "date_from": "2022/01/01",
+      "date_to": "2026/10/20",
+      "sort": "publication_date",
+      "max_results": 10,
+      "offset": 0,
+      "total_results": 2,
+      "returned_count": 2,
+      "returned_pmids": [
+        "41112039",
+        "38868435"
+      ],
+      "next_offset": null,
+      "has_more": false,
+      "pagination_limited": false,
+      "selection_limit": "First returned page only; broader result set was not exhaustively screened",
+      "warnings": [
+        "fastplong"
+      ]
+    },
+    {
+      "source": "PubMed connector",
+      "label": "known_title",
+      "query": "\"The Sanger FASTQ file format for sequences with quality scores, and the Solexa/Illumina FASTQ variants\"[Title]",
+      "query_translation": "\"The Sanger FASTQ file format for sequences with quality scores, and the Solexa/Illumina FASTQ variants\"[Title]",
+      "date_type": "not restricted (foundational lookup)",
+      "date_from": null,
+      "date_to": null,
+      "sort": "relevance",
+      "max_results": 5,
+      "offset": 0,
+      "total_results": 0,
+      "returned_count": 0,
+      "returned_pmids": [],
+      "next_offset": null,
+      "has_more": false,
+      "pagination_limited": false,
+      "selection_limit": "First returned page only; broader result set was not exhaustively screened",
+      "warnings": [
+        "\"The Sanger FASTQ file format for sequences with quality scores, and the Solexa/Illumina FASTQ variants\"[Title]",
+        "No items found."
+      ]
+    }
+  ],
+  "screening": [
+    {
+      "search": "broad",
+      "pmid": "42860977",
+      "title": "Dataset for small RNA sequencing of murine dendritic cell-derived exosomal miRNAs.",
+      "doi": "10.1016/j.dib.2026.113277",
+      "decision": "exclude",
+      "reason": "Not directly about this repository's bounded reliability problem; disease-specific data/application, single-cell resource, preprint, or broader pipeline outside scope",
+      "screening_access": "Title-first relevance screen; abstracts appraised for included candidates, not full-paper appraisal."
+    },
+    {
+      "search": "broad",
+      "pmid": "42595979",
+      "title": "Transcriptome datasets of four freshwater bacterial isolates grown under iron-replete and iron-limited conditions.",
+      "doi": "10.1186/s12863-026-01477-9",
+      "decision": "exclude",
+      "reason": "Not directly about this repository's bounded reliability problem; disease-specific data/application, single-cell resource, preprint, or broader pipeline outside scope",
+      "screening_access": "Title-first relevance screen; abstracts appraised for included candidates, not full-paper appraisal."
+    },
+    {
+      "search": "broad",
+      "pmid": "42511937",
+      "title": "Analytical Validation and Clinical Implementation of a 1080-Gene Comprehensive Genomic Profiling Assay with Integrated Cloud-Based Analysis for Solid Tumor Molecular Oncology.",
+      "doi": "10.3390/biomedicines14071462",
+      "decision": "exclude",
+      "reason": "Not directly about this repository's bounded reliability problem; disease-specific data/application, single-cell resource, preprint, or broader pipeline outside scope",
+      "screening_access": "Title-first relevance screen; abstracts appraised for included candidates, not full-paper appraisal."
+    },
+    {
+      "search": "broad",
+      "pmid": "42308055",
+      "title": "Updates and validation of the Compi RNA-seq pipeline with a case study in Alzheimer's disease.",
+      "doi": "10.1515/jib-2025-0064",
+      "decision": "exclude",
+      "reason": "Not directly about this repository's bounded reliability problem; disease-specific data/application, single-cell resource, preprint, or broader pipeline outside scope",
+      "screening_access": "Title-first relevance screen; abstracts appraised for included candidates, not full-paper appraisal."
+    },
+    {
+      "search": "broad",
+      "pmid": "42079073",
+      "title": "REPLAY: A reproducible and user-friendly application for DNA replication timing analysis from Repli-seq data.",
+      "doi": "10.64898/2026.04.16.719037",
+      "decision": "exclude",
+      "reason": "Not directly about this repository's bounded reliability problem; disease-specific data/application, single-cell resource, preprint, or broader pipeline outside scope",
+      "screening_access": "Title-first relevance screen; abstracts appraised for included candidates, not full-paper appraisal."
+    },
+    {
+      "search": "broad",
+      "pmid": "41230550",
+      "title": "Computational Workflow for Genome-Wide DNA Methylation Profiling and Differential Methylation Analysis.",
+      "doi": "10.21769/BioProtoc.5506",
+      "decision": "exclude",
+      "reason": "Not directly about this repository's bounded reliability problem; disease-specific data/application, single-cell resource, preprint, or broader pipeline outside scope",
+      "screening_access": "Title-first relevance screen; abstracts appraised for included candidates, not full-paper appraisal."
+    },
+    {
+      "search": "broad",
+      "pmid": "40149484",
+      "title": "Development of Publicly Available Forensic DNA Sequence Mixture Data.",
+      "doi": "10.3390/genes16030333",
+      "decision": "exclude",
+      "reason": "Not directly about this repository's bounded reliability problem; disease-specific data/application, single-cell resource, preprint, or broader pipeline outside scope",
+      "screening_access": "Title-first relevance screen; abstracts appraised for included candidates, not full-paper appraisal."
+    },
+    {
+      "search": "broad",
+      "pmid": "39763815",
+      "title": "RNA-SeqEZPZ: A Point-and-Click Pipeline for Comprehensive Transcriptomics Analysis with Interactive Visualizations.",
+      "doi": "10.1101/2024.12.20.629844",
+      "decision": "exclude",
+      "reason": "Not directly about this repository's bounded reliability problem; disease-specific data/application, single-cell resource, preprint, or broader pipeline outside scope",
+      "screening_access": "Title-first relevance screen; abstracts appraised for included candidates, not full-paper appraisal."
+    },
+    {
+      "search": "broad",
+      "pmid": "39278463",
+      "title": "Easy analysis of bacterial whole-genome sequencing data for clinical microbiologists using open-source Galaxy platform: Characterization of ESBL-producing Enterobacterales from bloodstream infections.",
+      "doi": "10.1016/j.jgar.2024.08.012",
+      "decision": "exclude",
+      "reason": "Not directly about this repository's bounded reliability problem; disease-specific data/application, single-cell resource, preprint, or broader pipeline outside scope",
+      "screening_access": "Title-first relevance screen; abstracts appraised for included candidates, not full-paper appraisal."
+    },
+    {
+      "search": "broad",
+      "pmid": "39048050",
+      "title": "Transcriptomic evaluation of metals detected in placenta.",
+      "doi": "10.1016/j.chemosphere.2024.142929",
+      "decision": "exclude",
+      "reason": "Not directly about this repository's bounded reliability problem; disease-specific data/application, single-cell resource, preprint, or broader pipeline outside scope",
+      "screening_access": "Title-first relevance screen; abstracts appraised for included candidates, not full-paper appraisal."
+    },
+    {
+      "search": "narrow",
+      "pmid": "41112039",
+      "title": "fastp 1.0: An ultra-fast all-round tool for FASTQ data quality control and preprocessing.",
+      "doi": "10.1002/imt2.70078",
+      "decision": "include",
+      "reason": "Relevant primary software study addressing metadata/logging or FASTQ preprocessing context",
+      "screening_access": "Title-first relevance screen; abstracts appraised for included candidates, not full-paper appraisal."
+    },
+    {
+      "search": "narrow",
+      "pmid": "38868435",
+      "title": "Ultrafast one-pass FASTQ data preprocessing, quality control, and deduplication using fastp.",
+      "doi": "10.1002/imt2.107",
+      "decision": "include",
+      "reason": "Relevant primary software study addressing metadata/logging or FASTQ preprocessing context",
+      "screening_access": "Title-first relevance screen; abstracts appraised for included candidates, not full-paper appraisal."
+    },
+    {
+      "pmid": "20015970",
+      "decision": "include",
+      "reason": "Known foundational source retrieved directly after zero-hit exact-title query",
+      "screening_access": "Complete rights-eligible PMC body via two segments"
+    }
+  ],
+  "supplementary_searches": [
+    {
+      "source": "Direct official resource retrieval",
+      "date": "2026-10-20",
+      "total_search_results": null,
+      "total_count_known": false,
+      "screened_resources": 1,
+      "url": "https://github.com/OpenGene/fastp/tree/ee125a52fddae9d8189e13cd8a33ad04988a1351",
+      "accessed_files": [
+        "README.md",
+        "LICENSE"
+      ],
+      "commit": "ee125a52fddae9d8189e13cd8a33ad04988a1351",
+      "version": "1.4.0",
+      "license": "MIT",
+      "scope": "Reporting and refusal-to-overwrite contract only; no copied code"
+    },
+    {
+      "source": "Direct official resource retrieval",
+      "date": "2026-10-20",
+      "total_search_results": null,
+      "total_count_known": false,
+      "screened_resources": 1,
+      "url": "https://ena-docs.readthedocs.io/en/latest/retrieval/file-download.html",
+      "version": "live official documentation inspected 2026-10-20",
+      "scope": "MD5 transfer-completeness guidance; exact Git commit unavailable"
+    }
+  ],
+  "retrievals": [
+    {
+      "tool": "PubMed get_articles",
+      "pmids": [
+        "38868435",
+        "41112039",
+        "20015970"
+      ],
+      "purpose": "Citation/abstract verification",
+      "missing": []
+    },
+    {
+      "tool": "PubMed get_full_text_articles",
+      "pmc_ids": [
+        "PMC2847217"
+      ],
+      "offsets": [
+        0,
+        16000
+      ],
+      "max_chars_per_article": [
+        16000,
+        2000
+      ],
+      "final_truncated": false
+    }
+  ],
+  "limits": [
+    "Broad searches were capped at the first 10 records sorted by publication date; unscreened later pages remain",
+    "No citation-network, Embase, or systematic grey-literature search",
+    "PubMed publication-date filtering may include early-online records assigned to a later issue"
+  ],
+  "cited_publication_pmids": [
+    "38868435",
+    "41112039",
+    "20015970"
+  ],
+  "baseline_head": "9a932b88e6f6450b18f25a7c270f93faef6bbbae",
+  "baseline_check": "All files in root advancement-baseline.json snapshot matched local Git blob hashes before edits.",
+  "counts": {
+    "broad_total": 14,
+    "broad_screened": 10,
+    "narrow_total": 2,
+    "narrow_screened": 2,
+    "unique_topic_records_screened": 12,
+    "cited_topic_publications": 2,
+    "cited_foundational_publications": 1
+  }
+}
