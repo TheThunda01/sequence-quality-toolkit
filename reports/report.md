@@ -11,4 +11,4 @@ GC uses only A, C, G, and T in its denominator. Ambiguity includes N and the oth
 
 These are descriptive checks, not evidence of organism identity, contamination, sequence accuracy, biological function, or assembly correctness. The length statistic pools the supplied records; if they belong to different samples, it is not an assembly statistic for any one sample.
 
-See `sequences.csv` for per-record values and `report.json` for input SHA-256 fingerprints, symbol counts, and machine-readable results.
+See `sequences.csv` for per-record values, `samples.csv` for per-sample summaries, and `report.json` for input SHA-256 fingerprints, symbol counts, and machine-readable results.

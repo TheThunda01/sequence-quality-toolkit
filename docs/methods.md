@@ -1,8 +1,10 @@
-# Methods, choices, and limits
+# FASTA methods, choices, and limits
+
+This page describes `sequence_qc.py`. The separate [FASTQ methods](fastq-methods.md) cover the streaming read-quality workflow added in version 0.2.0.
 
 ## Scope
 
-This project answers a file-level question: are the records and their manifest internally consistent, and what are their lengths and symbol counts? It does not perform read alignment, taxonomic classification, sequence assembly, variant calling, functional annotation, or reference comparison.
+The FASTA workflow answers a file-level question: are the records and their manifest internally consistent, and what are their lengths and symbol counts? It does not perform read alignment, taxonomic classification, sequence assembly, variant calling, functional annotation, or reference comparison.
 
 ## Symbols and GC
 
@@ -16,11 +18,13 @@ GC is defined here as `(G + C) / (A + C + G + T)`. All ambiguity symbols are exc
 
 The formula does not require an assembly. Its interpretation does. These arbitrary strings and mixed sample labels are not assembled contigs, so their pooled N50 is simply a worked arithmetic example. Even for an actual assembly, contiguity alone cannot demonstrate correctness or completeness. This tool does not validate either property.
 
+Version 0.2.0 also calculates N50 and GC separately for each manifest sample label. This avoids pooling labels in the sample report, but the labels alone still do not establish that records constitute an assembly.
+
 ## Reproducibility and failure behavior
 
 The report includes SHA-256 input-file fingerprints and a tool version. The CLI validates both inputs before writing output. Invalid records, duplicate identifiers, missing mappings, extra mappings, and unsupported symbols stop the run with exit status 2. This avoids silently dropping mismatches. File-system write failures can still leave partial outputs; check exit status and rerun into a writable directory.
 
-The implementation snapshots each file's bytes, then parses and fingerprints that snapshot. It keeps both the input bytes and records in memory and is intended for small teaching fixtures. It is not a large-genome streaming tool. It does not support FASTQ quality scores, compressed inputs, or a directory of samples.
+The FASTA implementation snapshots each file's bytes, then parses and fingerprints that snapshot. It keeps both input bytes and records in memory and is intended for small teaching fixtures. This command is not a large-genome streaming tool and does not read compressed FASTA. Use `fastq_qc.py` for streaming plain/gzip FASTQ quality summaries.
 
 ## Sources
 

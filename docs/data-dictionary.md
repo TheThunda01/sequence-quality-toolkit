@@ -1,5 +1,7 @@
 # Data dictionary
 
+This page describes the FASTA workflow. The separate [FASTQ dictionary](fastq-data-dictionary.md) covers read-quality outputs.
+
 ## Inputs
 
 | File/field | Meaning | Validation |
@@ -24,6 +26,8 @@
 ## JSON summary and provenance
 
 `sequence_count` counts FASTA records; `sample_count` counts distinct manifest sample labels. `total_bases`, `canonical_bases`, and `ambiguous_bases` pool counts across records. Pooled fractions use the pooled counts, not the mean of per-record fractions. `symbol_counts` contains every accepted uppercase symbol, including zero counts. `length_n50` is the first record length at which the longest-first cumulative sum reaches at least half the pooled total. It is descriptive, and does not imply that records belong to one assembly.
+
+`samples.csv` and the JSON `samples` list contain one summary for each distinct manifest sample label: sequence count, total/canonical/ambiguous symbol counts, GC fraction with the same denominator, and length N50 restricted to that sample's records. A grouping label alone does not establish that those records form an assembly.
 
 `inputs` contains the two input basenames and SHA-256 digests of their bytes, including line endings. `dataset_label` is the caller's text, not a label inferred or independently verified by the tool. `schema_version` identifies the report format; `tool_version` identifies the implementation. Reports omit timestamps and absolute paths so the same inputs and label produce identical report bytes in the supported environment.
 

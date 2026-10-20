@@ -1,0 +1,2 @@
+sample_id,input_name,input_sha256,input_bytes,compression,quality_encoding,read_count,total_bases,min_length,max_length,mean_length,canonical_bases,ambiguous_bases,n_bases,gc_fraction,ambiguous_fraction,n_fraction,base_weighted_mean_phred,q20_fraction,q30_fraction,mean_expected_errors_per_read
+ERR458493_prefix,ERR458493_first1000.fastq.gz,4e380e55e0dfa36b1439c57138e123c59af4da2a289a0d2adfca085c2d6e76b4,51967,gzip,phred33,1000,51000,51,51,51.0,50998,2,2,0.438841,3.9e-05,3.9e-05,37.015059,0.982667,0.944373,0.17876764

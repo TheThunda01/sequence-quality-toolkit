@@ -26,6 +26,7 @@ class FastaTests(unittest.TestCase):
             "gap": ">one\nAC-GT\n",
             "embedded space": ">one\nAC GT\n",
             "digit": ">one\nACGT2\n",
+            "unicode case expansion": ">one\nß\n",
             "unsafe identifier": ">=formula\nACGT\n",
         }
         for label, text in examples.items():
@@ -86,6 +87,13 @@ class MetricTests(unittest.TestCase):
         self.assertEqual(result["ambiguous_bases"], 11)
         self.assertEqual(result["sequences"][0]["n_bases"], 1)
         self.assertEqual(result["ambiguous_fraction"], 1.0)
+
+    def test_sample_summaries_do_not_mix_assemblies(self):
+        result = qc.summarize([qc.SequenceRecord("a", "GC"), qc.SequenceRecord("b", "AAAAAA"), qc.SequenceRecord("c", "NNNN")], {"a":"s1","b":"s1","c":"s2"})
+        self.assertEqual(result["samples"][0]["gc_fraction"], 0.25)
+        self.assertEqual(result["samples"][0]["length_n50"], 6)
+        self.assertIsNone(result["samples"][1]["gc_fraction"])
+        self.assertEqual(result["samples"][1]["length_n50"], 4)
 
 
 class IntegrationTests(unittest.TestCase):

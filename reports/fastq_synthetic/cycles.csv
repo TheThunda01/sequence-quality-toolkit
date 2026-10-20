@@ -1,0 +1,15 @@
+sample_id,cycle,observed_bases,mean_phred,q20_fraction,q30_fraction,n_fraction,ambiguous_fraction
+toy_sample_A,1,3,23.333333,0.666667,0.666667,0.0,0.0
+toy_sample_A,2,3,23.333333,0.666667,0.666667,0.0,0.0
+toy_sample_A,3,3,30.0,1.0,0.666667,0.0,0.0
+toy_sample_A,4,3,30.0,1.0,0.666667,0.0,0.0
+toy_sample_A,5,2,30.0,1.0,0.5,0.5,0.5
+toy_sample_A,6,2,30.0,1.0,0.5,0.5,0.5
+toy_sample_A,7,1,40.0,1.0,1.0,0.0,0.0
+toy_sample_A,8,1,40.0,1.0,1.0,0.0,0.0
+toy_sample_B,1,2,10.0,0.5,0.0,0.5,0.5
+toy_sample_B,2,2,10.0,0.5,0.0,0.5,0.5
+toy_sample_B,3,2,10.0,0.5,0.0,0.5,0.5
+toy_sample_B,4,2,20.0,0.5,0.5,0.5,0.5
+toy_sample_B,5,1,40.0,1.0,1.0,0.0,0.0
+toy_sample_B,6,1,40.0,1.0,1.0,0.0,0.0

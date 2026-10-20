@@ -1,67 +1,92 @@
 # Sequence Quality Toolkit
 
-Small file checks are easy to overlook. This Python command checks that a DNA FASTA and its sample manifest agree, then produces a compact report of sequence lengths and symbols. It is a worked software project: the included sequences are deliberately simple synthetic strings, not observations from an organism.
+This project asks a practical question: **what can we learn from sequence files before doing biological analysis?** It checks FASTA records against a manifest and summarizes raw FASTQ quality scores without changing the reads. The code is small enough to follow, with tests for details that can quietly change a result.
 
-**Status:** working educational tool, version 0.1.0. No third-party dependencies, no network requests, and no biological prediction.
+**[Project context: background, purpose, and key themes](docs/project-context.md)**
 
-## What it demonstrates
+**Version 0.2.0:** working educational software with a real public yeast RNA-seq example and deliberately imperfect synthetic fixtures. Python 3.12; standard library only; no network access during QC.
 
-- A strict parser with useful errors for duplicate IDs, empty sequences, and unsupported symbols.
-- Manifest reconciliation before analysis, so a missing sample mapping cannot silently disappear.
-- Explicit metric definitions, machine-readable outputs, and input fingerprints.
-- Tests for the edge cases that can change an interpretation, including zero GC denominators and the N50 half-length boundary.
+## Start with the public-data example
 
-## Run the example
+The repository includes the first **1,000 reads** from [ENA run ERR458493](https://www.ebi.ac.uk/ena/browser/view/ERR458493), part of the *Saccharomyces cerevisiae* study [PRJEB5348](https://www.ncbi.nlm.nih.gov/bioproject/PRJEB5348). The complete source download was verified against its archive MD5 before the subset was created. Selection, checksums, source links, and reuse terms are in [public-data provenance](docs/public-data.md).
 
-Use Python **3.12**. From this repository's root:
+From the repository root, run:
 
 ```sh
-python sequence_qc.py --fasta examples/synthetic_sequences.fasta --manifest examples/manifest.csv --output-dir reports --dataset-label "Synthetic teaching fixture; not observed biological data"
+python fastq_qc.py --manifest examples/public/samples.csv --output-dir reports/fastq_public --dataset-label "First 1000 archived reads of yeast RNA-seq run ERR458493; convenience prefix, not representative"
 python -m unittest discover -s tests -v
 ```
 
-On systems where Python is called `python3`, substitute `python3`. No installation is needed. `make demo` and `make test` are shortcuts if Make is available.
+Use `python3` if that is your Python command. No installation or download is needed for this example. You can inspect the checked-in [report](reports/fastq_public/report.md) before running anything.
 
-The command writes three files, replacing earlier outputs with those names in the chosen directory:
+| Result from the included subset | Value |
+| --- | ---: |
+| Reads | 1,000 |
+| Read length | 51 symbols for every read |
+| Total symbols | 51,000 |
+| N symbols | 2 |
+| Mean Phred score, weighted by bases | 37.015059 |
+| Fraction of bases with Phred score ≥30 | 0.944373 |
 
-| Output | What is in it |
-| --- | --- |
-| [reports/report.md](reports/report.md) | A short human-readable summary. |
-| [reports/sequences.csv](reports/sequences.csv) | One row per sequence, including its sample label. |
-| [reports/report.json](reports/report.json) | Dataset totals, symbol counts, definitions through field names, and SHA-256 input fingerprints. |
+These values describe this small prefix. **They are not a quality assessment of the complete run, a measure of observed sequencing errors, or evidence for a biological effect.** We use the archive's organism label; the tool does not verify identity or contamination. The study publication is credited in the provenance guide, but its differential-expression analysis is not reproduced here.
 
-The bundled example has **3 records, 42 symbols, and 10 ambiguous symbols**. Its pooled GC fraction is **0.5** when the denominator includes only A, C, G, and T. The all-ambiguous record has a blank GC value in CSV and `null` in JSON. That value is undefined, not zero. The pooled length N50 is **24 symbols**.
+## What the FASTQ workflow does
 
-To see a deliberate validation failure:
+- Streams plain-text or gzip files, including wrapped sequence and quality lines.
+- Requires an explicit `phred33` declaration instead of guessing the quality encoding.
+- Checks headers, separators, DNA symbols, sequence/quality length agreement, and printable quality bounds.
+- Writes per-read metrics as JSON Lines while retaining summary counters in memory.
+- Produces per-sample and per-cycle quality summaries, exact read-length distributions, N/ambiguity counts, and raw-input SHA-256 fingerprints.
+- Validates every sample before replacing reports, so a malformed later file does not replace an earlier valid report set.
+
+The [synthetic example](reports/fastq_synthetic/report.md) makes low-quality scores and variable lengths easier to see:
 
 ```sh
-python sequence_qc.py --fasta examples/invalid_duplicate.fasta --manifest examples/manifest.csv --output-dir tmp/invalid
+python fastq_qc.py --manifest examples/fastq/samples.csv --output-dir reports/fastq_synthetic --dataset-label "Synthetic test reads; no biological origin"
 ```
 
-This exits with status 2 and reports a duplicate identifier. Input validation completes before any outputs are written. Existing reports are not removed on failure, so check the command's exit status rather than assuming an old report came from the latest run.
-
-## Input contract
-
-The FASTA can contain lowercase letters, wrapped sequences, blank lines, and descriptions after an identifier. IDs must start with a letter or digit; remaining characters can be letters, digits, `_`, `.`, `:`, or `-`. IDs are case-sensitive. Sequence symbols are normalized to uppercase. This intentionally limited DNA parser accepts `ACGTRYSWKMBDHVN` and rejects RNA `U`, gaps, digits, and spaces within a sequence line. See the [methods](docs/methods.md) for the code reference and choices.
-
-The manifest has exactly these two columns, in this order:
+Each FASTQ manifest row identifies **one file**, with paths relative to the manifest:
 
 ```csv
-sequence_id,sample_id
-toy_alpha,toy_sample_1
-toy_beta,toy_sample_1
+sample_id,fastq_path,quality_encoding
+sample_A,sample_A.fastq.gz,phred33
+sample_B,sample_B.fastq,phred33
 ```
 
-Every FASTA ID must appear exactly once in the manifest, with no extra manifest IDs. Several sequences may map to one sample. Sample IDs follow the same character rules as sequence IDs. Full field definitions are in the [data dictionary](docs/data-dictionary.md).
+Sample IDs and resolved input paths must be unique. Each file is analyzed independently. This version does not check mate pairing or merge lanes. Quality scores that could fit more than one encoding remain the caller's responsibility. Detailed input rules and metric definitions are in the [FASTQ methods](docs/fastq-methods.md) and [data dictionary](docs/fastq-data-dictionary.md).
 
-## What the report can tell us
+| Output in the chosen directory | Contents |
+| --- | --- |
+| `report.md` | Readable summary and interpretation boundaries. |
+| `report.json` | Provenance, per-sample statistics, and quality/symbol histograms. |
+| `samples.csv` | One row per manifest file. |
+| `cycles.csv` | Per-position summaries, using only reads that reach each position. |
+| `length_distribution.csv` | Exact counts of reads at each length. |
+| `read_metrics.jsonl` | One JSON object per read; this can be large for complete runs. |
 
-It can tell us whether files satisfy this input contract and what symbols and lengths they contain. N50 is a length-distribution statistic: records at least that long account for at least half the total length. Here, records are pooled across sample labels, so the example's N50 is **not** an assembly-quality result for either sample. [NCBI's definition](https://www.ncbi.nlm.nih.gov/datasets/docs/v2/reference-docs/data-reports/genome-assembly/) supplies the length-statistic convention; this tool does not assemble reads.
+## FASTA and manifest checks
 
-These summaries cannot establish organism identity, contamination, sequence accuracy, biological function, or assembly correctness. A passing report means only that these checks passed. There is no universal GC or N50 threshold for declaring an arbitrary input good.
+The original workflow remains available, now with separate sample summaries:
 
-## Provenance and reuse
+```sh
+python sequence_qc.py --fasta examples/synthetic_sequences.fasta --manifest examples/manifest.csv --output-dir reports --dataset-label "Synthetic teaching fixture; not observed biological data"
+```
 
-All example inputs were written for this project. They are repeated or ambiguity-only text strings with no accession, sampling event, or claimed biological origin. Code and project-created fixtures are covered by the repository's MIT license. No external sequence dataset is distributed. The [methods and sources](docs/methods.md) distinguish published definitions from implementation choices.
+This checks duplicate or empty records, unsupported DNA symbols, and missing/extra manifest IDs. It reports sequence lengths, GC with an explicit denominator, ambiguity counts, and pooled **and per-sample** length N50. The included FASTA is synthetic: 3 records, 42 symbols, 10 ambiguous symbols. GC is `null` when no A/C/G/T bases are available; it is never silently set to zero.
 
-The next useful extension would be a streaming reader for large files and per-sample length summaries, with the same explicit definitions. Neither is implemented in this version.
+See the [FASTA report](reports/report.md), [methods](docs/methods.md), and [dictionary](docs/data-dictionary.md). N50 here describes supplied sequence lengths. It does not validate an assembly, and the pooled statistic across unrelated samples is not an assembly-quality measure.
+
+## Reproduce everything
+
+```sh
+make test
+make demo
+```
+
+`make demo` regenerates all three report sets without downloading data. GitHub Actions runs the tests and verifies that regenerated reports match the committed results. To rebuild the public subset itself, use [the documented retrieval script](docs/public-data.md); that optional step downloads about 60 MB and validates the complete archive before extracting 1,000 reads.
+
+## What still needs another tool
+
+The toolkit does not trim or filter reads, identify adapters, inspect duplication or overrepresented sequences, calculate mapping quality, assess contamination, or infer function. There is no automatic pass/fail quality threshold. [FastQC, fastp, and MultiQC](docs/fastq-methods.md#relationship-to-established-tools) cover broader tasks and have their own methods and assumptions. This repository is an inspectable subset of QC calculations, not a replacement or a claimed reimplementation of those tools.
+
+Project code and synthetic fixtures use the MIT license. The public sequencing subset retains its [ENA/INSDC data-sharing terms](docs/public-data.md#reuse-and-attribution); it is not relicensed as project code. The initial implementation used AI assistance, as described in [CONTRIBUTING.md](CONTRIBUTING.md).

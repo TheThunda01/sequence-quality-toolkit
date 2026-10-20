@@ -1,0 +1,2 @@
+sample_id,fastq_path,quality_encoding
+ERR458493_prefix,ERR458493_first1000.fastq.gz,phred33

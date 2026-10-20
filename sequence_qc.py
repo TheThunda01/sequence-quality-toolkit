@@ -14,7 +14,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import TextIO
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 ALPHABET = frozenset("ACGTRYSWKMBDHVN")
 CANONICAL = frozenset("ACGT")
 IDENTIFIER = re.compile(r"[A-Za-z0-9][A-Za-z0-9_.:-]*\Z")
@@ -67,6 +67,8 @@ def parse_fasta(handle: TextIO) -> list[SequenceRecord]:
         else:
             if identifier is None:
                 raise ValidationError(f"FASTA line {line_number}: sequence precedes the first header")
+            if not line.isascii():
+                raise ValidationError(f"FASTA line {line_number}: non-ASCII DNA characters")
             sequence = line.upper()
             invalid = sorted(set(sequence) - ALPHABET)
             if invalid:
@@ -144,6 +146,19 @@ def summarize(records: list[SequenceRecord], manifest: dict[str, str]) -> dict:
         })
     total = sum(row["length"] for row in rows)
     canonical = sum(all_counts[base] for base in CANONICAL)
+    samples = []
+    for sample_id in sorted(set(manifest.values())):
+        sample_records = [record for record in records if manifest[record.sequence_id] == sample_id]
+        counts = Counter("".join(record.sequence for record in sample_records))
+        sample_lengths = [len(record.sequence) for record in sample_records]
+        sample_total = sum(sample_lengths)
+        sample_canonical = sum(counts[base] for base in CANONICAL)
+        samples.append({
+            "sample_id": sample_id, "sequence_count": len(sample_records), "total_bases": sample_total,
+            "canonical_bases": sample_canonical, "ambiguous_bases": sample_total - sample_canonical,
+            "gc_fraction": fraction(counts["G"] + counts["C"], sample_canonical),
+            "length_n50": length_n50(sample_lengths),
+        })
     return {
         "sequence_count": len(rows),
         "sample_count": len(set(manifest.values())),
@@ -155,6 +170,7 @@ def summarize(records: list[SequenceRecord], manifest: dict[str, str]) -> dict:
         "length_n50": length_n50([row["length"] for row in rows]),
         "symbol_counts": {base: all_counts[base] for base in sorted(ALPHABET)},
         "sequences": rows,
+        "samples": samples,
     }
 
 
@@ -170,7 +186,7 @@ def build_report(fasta: Path, manifest_path: Path, dataset_label: str) -> dict:
     records = parse_fasta(io.StringIO(fasta_bytes.decode("utf-8")))
     manifest = parse_manifest(io.StringIO(manifest_bytes.decode("utf-8"), newline=""))
     return {
-        "schema_version": "1.0",
+        "schema_version": "1.1",
         "tool_version": __version__,
         "dataset_label": dataset_label,
         "scope": "Descriptive DNA file checks; biological source and sequence accuracy are not verified.",
@@ -192,12 +208,12 @@ def markdown_report(report: dict) -> str:
         "GC uses only A, C, G, and T in its denominator. Ambiguity includes N and the other accepted IUPAC ambiguity symbols.\n\n"
         "These are descriptive checks, not evidence of organism identity, contamination, sequence accuracy, biological function, or assembly correctness. "
         "The length statistic pools the supplied records; if they belong to different samples, it is not an assembly statistic for any one sample.\n\n"
-        "See `sequences.csv` for per-record values and `report.json` for input SHA-256 fingerprints, symbol counts, and machine-readable results.\n"
+        "See `sequences.csv` for per-record values, `samples.csv` for per-sample summaries, and `report.json` for input SHA-256 fingerprints, symbol counts, and machine-readable results.\n"
     )
 
 
 def write_report(report: dict, output_dir: Path, input_paths: list[Path]) -> None:
-    outputs = [output_dir / name for name in ("report.json", "sequences.csv", "report.md")]
+    outputs = [output_dir / name for name in ("report.json", "sequences.csv", "report.md", "samples.csv")]
     if {path.resolve() for path in input_paths} & {path.resolve() for path in outputs}:
         raise ValidationError("An output path would overwrite an input file")
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -208,6 +224,11 @@ def write_report(report: dict, output_dir: Path, input_paths: list[Path]) -> Non
         writer.writeheader()
         writer.writerows(rows)
     outputs[2].write_text(markdown_report(report), encoding="utf-8")
+    samples = report["metrics"]["samples"]
+    with outputs[3].open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=list(samples[0]))
+        writer.writeheader()
+        writer.writerows(samples)
 
 
 def main(argv: list[str] | None = None) -> int:

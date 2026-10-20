@@ -17,6 +17,26 @@
     "gc_fraction": 0.5,
     "length_n50": 24,
     "sample_count": 2,
+    "samples": [
+      {
+        "ambiguous_bases": 4,
+        "canonical_bases": 32,
+        "gc_fraction": 0.5,
+        "length_n50": 24,
+        "sample_id": "toy_sample_1",
+        "sequence_count": 2,
+        "total_bases": 36
+      },
+      {
+        "ambiguous_bases": 6,
+        "canonical_bases": 0,
+        "gc_fraction": null,
+        "length_n50": 6,
+        "sample_id": "toy_sample_2",
+        "sequence_count": 1,
+        "total_bases": 6
+      }
+    ],
     "sequence_count": 3,
     "sequences": [
       {
@@ -69,7 +89,7 @@
     },
     "total_bases": 42
   },
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "scope": "Descriptive DNA file checks; biological source and sequence accuracy are not verified.",
-  "tool_version": "0.1.0"
+  "tool_version": "0.2.0"
 }
