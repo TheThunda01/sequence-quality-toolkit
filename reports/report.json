@@ -91,5 +91,5 @@
   },
   "schema_version": "1.1",
   "scope": "Descriptive DNA file checks; biological source and sequence accuracy are not verified.",
-  "tool_version": "0.2.0"
+  "tool_version": "0.3.0"
 }

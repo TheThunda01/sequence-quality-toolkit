@@ -6,7 +6,7 @@ import argparse
 from collections import Counter
 from contextlib import contextmanager
 import csv
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 import gzip
 import hashlib
 import io
@@ -21,7 +21,7 @@ import zlib
 
 from sequence_qc import ALPHABET, CANONICAL, ValidationError, fraction, valid_identifier
 
-VERSION = "0.2.0"
+VERSION = "0.3.0"
 MAX_READ_LENGTH = 1_000_000
 OUTPUT_NAMES = ("report.json", "report.md", "samples.csv", "cycles.csv", "length_distribution.csv", "read_metrics.jsonl")
 
@@ -31,6 +31,7 @@ class FastqRecord:
     read_id: str
     sequence: str
     quality: str
+    header: str = field(default="", compare=False, repr=False)
 
 
 @dataclass(frozen=True)
@@ -99,7 +100,7 @@ def iter_fastq(handle: TextIO, max_read_length: int = MAX_READ_LENGTH) -> Iterat
             if quality_length > sequence_length:
                 raise ValidationError(f"FASTQ record {number}: quality string longer than sequence")
             qualities.append(line)
-        yield FastqRecord(read_id, "".join(pieces), "".join(qualities))
+        yield FastqRecord(read_id, "".join(pieces), "".join(qualities), header=header[1:])
 
 
 def parse_sample_manifest(path: Path) -> tuple[list[SampleInput], dict]:

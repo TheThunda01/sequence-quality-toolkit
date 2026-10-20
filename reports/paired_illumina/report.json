@@ -1,0 +1,30 @@
+{
+  "dataset_label": "Synthetic paired fixtures; no biological origin",
+  "inputs": {
+    "r1": {
+      "bytes": 100,
+      "compression": "none",
+      "name": "illumina_R1.fastq",
+      "sha256": "0e1f99abdafd2ce6528683afe524a70bd5232dfa1ca0a658eddd043a576ef28a"
+    },
+    "r2": {
+      "bytes": 104,
+      "compression": "none",
+      "name": "illumina_R2.fastq",
+      "sha256": "7ab51b6ff6b340ab9de9117f1a08dc38a9e5e16f120c08556eeb58ee3933a77c"
+    }
+  },
+  "metrics": {
+    "r1_read_count": 2,
+    "r2_read_count": 2,
+    "validated_pairs": 2
+  },
+  "mode": "paired_fastq_consistency",
+  "name_convention": "illumina",
+  "quality_encoding": "phred33",
+  "sample_id": "synthetic_illumina",
+  "schema_version": "1.0",
+  "scope": "Equal read counts and matching normalized identifiers in input order, with explicit mate labels. No uniqueness, sequence-orientation, alignment, or biological-identity validation.",
+  "status": "passed_positional_checks",
+  "tool_version": "0.3.0"
+}

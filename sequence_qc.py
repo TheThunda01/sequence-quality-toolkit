@@ -14,7 +14,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import TextIO
 
-__version__ = "0.2.0"
+__version__ = "0.3.0"
 ALPHABET = frozenset("ACGTRYSWKMBDHVN")
 CANONICAL = frozenset("ACGT")
 IDENTIFIER = re.compile(r"[A-Za-z0-9][A-Za-z0-9_.:-]*\Z")

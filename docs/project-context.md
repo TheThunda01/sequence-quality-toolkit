@@ -10,6 +10,8 @@ This project makes a small set of those checks visible and reproducible. The aim
 
 The FASTA workflow checks identifiers and sample mappings, then reports lengths, ambiguity counts, GC fractions, and length N50. The FASTQ workflow reads plain or compressed files, requires an explicit quality encoding, and reports quality and length summaries for each file, read, and sequence position. Input fingerprints connect the results to the exact files used.
 
+A separate paired-file check validates matching identifiers and mate labels in record order, without changing reads.
+
 The examples combine deliberately imperfect synthetic data with a small excerpt from a public yeast RNA-seq experiment. Tests cover malformed records, undefined fractions, inconsistent metadata, and reproducible output.
 
 ## Why it matters

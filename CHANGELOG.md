@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.0
+
+- Added a separate paired FASTQ consistency validator with explicit suffix/Illumina name rules, raw-input hashes, and synthetic examples.
+- Added biology/concepts documentation and a source-backed comparison of relevant SeqKit and seqtk behavior.
+- Preserved the public yeast example's single-end label; no paired biological data or strand assumptions were introduced.
+
 ## 0.2.0
 
 - Added a streaming FASTQ workflow with explicit Phred+33, plain/gzip input, per-read/per-cycle metrics, length distributions, and raw-byte fingerprints.

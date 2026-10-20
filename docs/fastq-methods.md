@@ -22,7 +22,7 @@ Raw source bytes are hashed while they pass into the parser/decompressor. A gzip
 
 Read-level JSON Lines are streamed to a temporary report directory. Memory grows with the longest read, distinct observed lengths, and per-cycle/per-sample summaries rather than with all read records. A million short reads still produce a large per-read output file; budget disk space accordingly. Full input validation completes before temporary outputs replace the named report files. A later file-system error during replacement could leave a partial report set; check the exit status.
 
-Sample files are independent. This version cannot establish whether mates have corresponding identifiers, whether two files are lanes from one library, or whether samples are biological replicates. It has no reference genome and does not calculate alignment/mapping quality. Base-quality summaries do not establish identity, contamination, adapter content, duplication, or function.
+The quality-summary command treats sample files independently. The separate [paired-file validator](paired-fastq.md) checks positional identifiers and mate labels; neither command establishes whether files are lanes from one library or samples are biological replicates. There is no reference genome and no alignment/mapping-quality calculation. Base-quality summaries do not establish identity, contamination, adapter content, duplication, or function.
 
 ## Relationship to established tools
 
@@ -33,6 +33,8 @@ Sample files are independent. This version cannot establish whether mates have c
 | [MultiQC](https://doi.org/10.1093/bioinformatics/btw354) | Aggregates outputs from multiple analysis tools and samples. | This project writes its own reports; MultiQC integration is not implemented. |
 
 No external-tool benchmark or equivalence check is claimed. FastQC, fastp, and MultiQC were not installed in the development runtime. The automated checks compare calculations with small known-answer examples and verify the included public-data fixture's recorded fingerprints.
+
+See [related GitHub tools](related-tools.md) for the SeqKit and seqtk behavior inspected while designing paired-file validation.
 
 ## References
 

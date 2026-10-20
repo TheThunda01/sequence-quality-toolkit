@@ -1,0 +1,30 @@
+{
+  "dataset_label": "Synthetic paired fixtures; no biological origin",
+  "inputs": {
+    "r1": {
+      "bytes": 56,
+      "compression": "none",
+      "name": "suffix_R1.fastq",
+      "sha256": "8495f5e6b87141a83ff20fcdcaac5f47e667dffb9ea5ec5acfa16422c3bd1359"
+    },
+    "r2": {
+      "bytes": 54,
+      "compression": "none",
+      "name": "suffix_R2.fastq",
+      "sha256": "98c1ab9b9a964986b9860b224dc5d0a547bdfc3abc8162619488a280c4a736b7"
+    }
+  },
+  "metrics": {
+    "r1_read_count": 2,
+    "r2_read_count": 2,
+    "validated_pairs": 2
+  },
+  "mode": "paired_fastq_consistency",
+  "name_convention": "suffix",
+  "quality_encoding": "phred33",
+  "sample_id": "synthetic_suffix",
+  "schema_version": "1.0",
+  "scope": "Equal read counts and matching normalized identifiers in input order, with explicit mate labels. No uniqueness, sequence-orientation, alignment, or biological-identity validation.",
+  "status": "passed_positional_checks",
+  "tool_version": "0.3.0"
+}

@@ -4,7 +4,9 @@ This project asks a practical question: **what can we learn from sequence files 
 
 **[Project context: background, purpose, and key themes](docs/project-context.md)**
 
-**Version 0.2.0:** working educational software with a real public yeast RNA-seq example and deliberately imperfect synthetic fixtures. Python 3.12; standard library only; no network access during QC.
+**[Biology and concepts: reads, quality scores, pairs, and interpretation](docs/biology-and-concepts.md)**
+
+**Version 0.3.0:** working educational software with a real public yeast RNA-seq example and deliberately imperfect synthetic fixtures. Python 3.12; standard library only; no network access during QC.
 
 ## Start with the public-data example
 
@@ -53,7 +55,7 @@ sample_A,sample_A.fastq.gz,phred33
 sample_B,sample_B.fastq,phred33
 ```
 
-Sample IDs and resolved input paths must be unique. Each file is analyzed independently. This version does not check mate pairing or merge lanes. Quality scores that could fit more than one encoding remain the caller's responsibility. Detailed input rules and metric definitions are in the [FASTQ methods](docs/fastq-methods.md) and [data dictionary](docs/fastq-data-dictionary.md).
+Sample IDs and resolved input paths must be unique. This quality-summary command analyzes each file independently and does not merge lanes. Use the separate paired-file check below for positional mate consistency. Quality scores that could fit more than one encoding remain the caller's responsibility. Detailed input rules and metric definitions are in the [FASTQ methods](docs/fastq-methods.md) and [data dictionary](docs/fastq-data-dictionary.md).
 
 | Output in the chosen directory | Contents |
 | --- | --- |
@@ -76,6 +78,16 @@ This checks duplicate or empty records, unsupported DNA symbols, and missing/ext
 
 See the [FASTA report](reports/report.md), [methods](docs/methods.md), and [dictionary](docs/data-dictionary.md). N50 here describes supplied sequence lengths. It does not validate an assembly, and the pooled statistic across unrelated samples is not an assembly-quality measure.
 
+## Check paired files without changing them
+
+The separate paired FASTQ validator checks equal read counts, matching normalized identifiers in the same order, and explicit R1/R2 mate labels. It accepts plain/gzip input and requires you to select one supported naming convention.
+
+```sh
+python paired_fastq_check.py --read1 examples/paired/suffix_R1.fastq --read2 examples/paired/suffix_R2.fastq --name-convention suffix --quality-encoding phred33 --sample-id synthetic_suffix --dataset-label "Synthetic paired fixtures; no biological origin" --output-dir reports/paired_suffix
+```
+
+See the [paired-file rules](docs/paired-fastq.md), [example result](reports/paired_suffix/report.md), and [related GitHub tools](docs/related-tools.md). It does not reorder reads, assume reverse-complement relationships, or establish biological pairing. The public yeast excerpt is single-end; paired examples are explicitly synthetic.
+
 ## Reproduce everything
 
 ```sh
@@ -83,7 +95,7 @@ make test
 make demo
 ```
 
-`make demo` regenerates all three report sets without downloading data. GitHub Actions runs the tests and verifies that regenerated reports match the committed results. To rebuild the public subset itself, use [the documented retrieval script](docs/public-data.md); that optional step downloads about 60 MB and validates the complete archive before extracting 1,000 reads.
+`make demo` regenerates all five report sets without downloading data. GitHub Actions runs the tests and verifies that regenerated reports match the committed results. To rebuild the public subset itself, use [the documented retrieval script](docs/public-data.md); that optional step downloads about 60 MB and validates the complete archive before extracting 1,000 reads.
 
 ## What still needs another tool
 

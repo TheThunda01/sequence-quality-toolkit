@@ -8,7 +8,7 @@
 | `fastq_path` | Existing plain/gzip file, relative to the manifest or absolute. The same resolved file cannot appear twice. |
 | `quality_encoding` | Exactly `phred33`. Required, never inferred. |
 
-One file per row is supported. Separate mate files can only be treated as independent files with distinct labels; pairing is not checked. Use a paired-read workflow for pairing validation.
+One file per row is supported by the quality-summary command. Separate mate files are treated as independent files with distinct labels. Use the separate [paired-file validator](paired-fastq.md) for supported positional identifier checks.
 
 ## Sample and read fields
 
