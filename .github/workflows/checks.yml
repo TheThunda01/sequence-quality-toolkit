@@ -12,5 +12,6 @@ jobs:
           python-version: '3.12'
       - run: python -m unittest discover -s tests -v
       - run: make audit
+      - run: python fastq_qc.py --manifest examples/public/samples.csv --input-lock examples/public/input-lock.json --output-dir /tmp/locked-public-qc --dataset-label "First 1000 archived reads of ERR458493; convenience prefix, not representative"
       - run: make demo
       - run: git diff --exit-code -- reports

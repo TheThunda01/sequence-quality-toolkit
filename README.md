@@ -79,8 +79,7 @@ See the [paired-file rules](docs/paired-fastq.md), [example result](reports/pair
 Python 3.12 and the standard library are sufficient. From the repository root:
 
 ```sh
-python input_fingerprints.py verify --manifest examples/public/samples.csv --lock examples/public/input-lock.json
-python fastq_qc.py --manifest examples/public/samples.csv --output-dir my-qc --dataset-label "First 1000 archived reads of ERR458493; convenience prefix, not representative"
+python fastq_qc.py --manifest examples/public/samples.csv --input-lock examples/public/input-lock.json --output-dir my-qc --dataset-label "First 1000 archived reads of ERR458493; convenience prefix, not representative"
 python -m unittest discover -s tests -v
 ```
 
@@ -116,6 +115,10 @@ Project code and synthetic fixtures use the MIT license. The public sequencing s
 
 The [practical-use guide](docs/practical-use.md) explains how to transfer and verify an input lock. A lock records the bytes chosen by the operator; it cannot authenticate their source or establish quality. Keep the public yeast prefix and synthetic paired fixtures distinct.
 
+### Integrated input check
+
+The optional `--input-lock` flag now enforces the declared fingerprints within QC and checks the raw bytes actually consumed before publishing reports. Without the flag, earlier behavior is preserved. It does not authenticate sample identity or prevent concurrent filesystem changes; see the [updated contract](docs/practical-use.md).
+
 ## Documentation
 
 | Guide | Purpose |
@@ -129,6 +132,7 @@ The [practical-use guide](docs/practical-use.md) explains how to transfer and ve
 | [Practical use](docs/practical-use.md) | Input locks, worked use case, and next improvements |
 | [Literature review](docs/literature-review.md) | Bounded review supporting this extension |
 | [Search log](docs/search-log.json) | Exact queries, counts, identifiers, and decisions |
+| [Evidence update 02](docs/search-update-02.json) | Targeted same-day follow-up search and decisions |
 
 ## Development and reuse
 

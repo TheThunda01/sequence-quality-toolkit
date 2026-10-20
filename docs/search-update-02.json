@@ -1,0 +1,81 @@
+{
+  "search_date": "2026-10-20",
+  "update_id": "02",
+  "scope": "Round 2 on the same date: integrate existing raw-input fingerprint lock into FASTQ QC before output publication. This is a new implementation scope, not elapsed-time monitoring.",
+  "inclusion_criteria": [
+    "Direct evidence for numerical comparison or file-integrity implementation behavior",
+    "Primary scientific papers only for their studied claim; official documentation for software semantics"
+  ],
+  "exclusion_criteria": [
+    "Unrelated biological applications",
+    "No new biological accuracy or performance claims inferred from implementation documentation"
+  ],
+  "searches": [
+    {
+      "source": "PubMed connector",
+      "query": "FASTQ[Title/Abstract] AND (checksum[Title/Abstract] OR \"data integrity\"[Title/Abstract])",
+      "query_translation": "\"FASTQ\"[Title/Abstract] AND (\"checksum\"[Title/Abstract] OR \"data integrity\"[Title/Abstract]) AND 2022/01/01:2026/10/20[Date - Publication]",
+      "date_from": "2022/01/01",
+      "date_to": "2026/10/20",
+      "date_type": "publication",
+      "sort": "publication_date",
+      "max_results": 8,
+      "max_abstract_chars": 4000,
+      "offset": 0,
+      "total_results": 2,
+      "returned_count": 2,
+      "retrieved_pmids": [
+        "42860977",
+        "39747361"
+      ],
+      "next_offset": null,
+      "pagination_limited": false,
+      "warnings": [],
+      "selection_limit": "All returned records in this narrow result set screened; not a comprehensive literature search"
+    }
+  ],
+  "screening": [
+    {
+      "pmid": "42860977",
+      "title": "Dataset for small RNA sequencing of murine dendritic cell-derived exosomal miRNAs.",
+      "doi": "10.1016/j.dib.2026.113277",
+      "decision": "exclude",
+      "reason": "Biological dataset application does not inform the bounded integrated-lock implementation.",
+      "access": "PubMed citation and abstract only"
+    },
+    {
+      "pmid": "39747361",
+      "title": "Lossless and reference-free compression of FASTQ/A files using GeneSqueeze.",
+      "doi": "10.1038/s41598-024-79258-6",
+      "decision": "include_context_only",
+      "reason": "Abstract addresses fidelity of FASTQ components under compression; no compression benchmark or code adopted.",
+      "access": "PubMed citation and abstract only"
+    }
+  ],
+  "supplementary_resources": [
+    {
+      "url": "https://ena-docs.readthedocs.io/en/latest/retrieval/file-download.html",
+      "type": "Official ENA documentation",
+      "inspected_version": "Live page on 2026-10-20; immutable revision unavailable",
+      "finding": "Archive checksums support checking transferred file bytes, not biological validity."
+    }
+  ],
+  "retrieved_records": [
+    {
+      "pmid": "39747361",
+      "method": "PubMed get_articles",
+      "access": "Citation and abstract",
+      "full_text_appraised": false
+    }
+  ],
+  "counts": {
+    "pubmed_total_results": 2,
+    "pubmed_records_screened": 2,
+    "new_primary_context_papers": 1
+  },
+  "limits": [
+    "Bounded targeted update with one reviewer; original search-log.json remains unchanged",
+    "No cross-platform validation or independent scientific validation supplied by documentation",
+    "Supplementary direct URL retrieval has no exposed total search-result count"
+  ]
+}

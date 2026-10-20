@@ -281,9 +281,19 @@ def report_markdown(report: dict) -> str:
     return "\n".join(lines)
 
 
-def run(manifest_path: Path, output_dir: Path, dataset_label: str) -> dict:
+def run(manifest_path: Path, output_dir: Path, dataset_label: str, input_lock: Path | None = None) -> dict:
+    locked = None
+    if input_lock is not None:
+        # Local import avoids a module cycle: the standalone lock tool uses our parser.
+        from input_fingerprints import verify
+        lock_bytes = Path(input_lock).read_bytes()
+        locked = verify(manifest_path, input_lock)
     samples, manifest_provenance = parse_sample_manifest(manifest_path)
+    if locked is not None and manifest_provenance['sha256'] != locked['manifest_sha256']:
+        raise ValidationError('Sample sheet changed after input-lock preflight')
     inputs = {manifest_path.resolve(), *(sample.path.resolve() for sample in samples)}
+    if input_lock is not None:
+        inputs.add(Path(input_lock).resolve())
     if any((output_dir / name).resolve() in inputs for name in OUTPUT_NAMES):
         raise ValidationError("An output path would overwrite an input file")
     output_dir.parent.mkdir(parents=True, exist_ok=True)
@@ -296,6 +306,18 @@ def run(manifest_path: Path, output_dir: Path, dataset_label: str) -> dict:
                 summaries.append(summary)
                 cycles.extend(cycle_rows)
                 lengths.extend(length_rows)
+        if locked is not None:
+            # Compare the bytes actually consumed by QC, not just an earlier scan.
+            for expected, sample in zip(locked['files'], summaries):
+                if (expected['sample_id'] != sample['sample_id']
+                        or expected['sha256'] != sample['input_sha256']
+                        or expected['bytes'] != sample['input_bytes']):
+                    raise ValidationError('Input bytes consumed by QC differ from the input lock')
+            if len(locked['files']) != len(summaries):
+                raise ValidationError('Input-lock file count differs from processed samples')
+            if (hashlib.sha256(manifest_path.read_bytes()).hexdigest() != locked['manifest_sha256']
+                    or Path(input_lock).read_bytes() != lock_bytes):
+                raise ValidationError('Sample sheet or input lock changed during QC')
         report = {
             "schema_version": "2.0", "tool_version": VERSION, "mode": "fastq",
             "dataset_label": dataset_label, "manifest": manifest_provenance,
@@ -303,6 +325,13 @@ def run(manifest_path: Path, output_dir: Path, dataset_label: str) -> dict:
             "max_read_length": MAX_READ_LENGTH,
             "samples": summaries,
         }
+        if locked is not None:
+            report['input_lock'] = {
+                'name': Path(input_lock).name,
+                'sha256': hashlib.sha256(lock_bytes).hexdigest(),
+                'status': 'preflight_and_consumed_bytes_match',
+                'scope': 'Exact declared input bytes; no authentication or biological validation',
+            }
         (staging / "report.json").write_text(json.dumps(report, indent=2, sort_keys=True, allow_nan=False) + "\n", encoding="utf-8")
         (staging / "report.md").write_text(report_markdown(report), encoding="utf-8")
         scalar_summaries = [{k: v for k, v in row.items() if not isinstance(v, dict)} for row in summaries]
@@ -320,11 +349,12 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--manifest", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--dataset-label", default="Unspecified inputs; source not independently verified")
+    parser.add_argument("--input-lock", type=Path, help="Require a matching fingerprint lock before publishing QC outputs")
     parser.add_argument("--version", action="version", version=VERSION)
     args = parser.parse_args(argv)
     try:
-        report = run(args.manifest, args.output_dir, args.dataset_label)
-    except (ValidationError, OSError, UnicodeError, csv.Error, EOFError, zlib.error) as error:
+        report = run(args.manifest, args.output_dir, args.dataset_label, args.input_lock)
+    except (ValueError, OSError, UnicodeError, csv.Error, EOFError, zlib.error) as error:
         print(f"Input/output error: {error}", file=sys.stderr)
         return 2
     print(f"Wrote {args.output_dir / 'report.json'} ({len(report['samples'])} samples)")
