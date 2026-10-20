@@ -1,0 +1,4 @@
+sequence_id,sample_id,length,canonical_bases,gc_fraction,ambiguous_bases,ambiguous_fraction,n_bases
+toy_alpha,toy_sample_1,24,24,0.5,0,0.0,0
+toy_beta,toy_sample_1,12,8,0.5,4,0.333333,2
+toy_gamma,toy_sample_2,6,0,,6,1.0,6

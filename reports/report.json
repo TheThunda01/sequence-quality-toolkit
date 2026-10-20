@@ -1,0 +1,75 @@
+{
+  "dataset_label": "Synthetic teaching fixture; not observed biological data",
+  "inputs": {
+    "fasta": {
+      "name": "synthetic_sequences.fasta",
+      "sha256": "9a8cac01a4f28ef393be6f81c60484223b47c881a11338552dfcb52c049f1e95"
+    },
+    "manifest": {
+      "name": "manifest.csv",
+      "sha256": "6be4fb8d1ed706f8ea4cafe3da79b213235d4e1e81d03bbd9993d94c14c9b513"
+    }
+  },
+  "metrics": {
+    "ambiguous_bases": 10,
+    "ambiguous_fraction": 0.238095,
+    "canonical_bases": 32,
+    "gc_fraction": 0.5,
+    "length_n50": 24,
+    "sample_count": 2,
+    "sequence_count": 3,
+    "sequences": [
+      {
+        "ambiguous_bases": 0,
+        "ambiguous_fraction": 0.0,
+        "canonical_bases": 24,
+        "gc_fraction": 0.5,
+        "length": 24,
+        "n_bases": 0,
+        "sample_id": "toy_sample_1",
+        "sequence_id": "toy_alpha"
+      },
+      {
+        "ambiguous_bases": 4,
+        "ambiguous_fraction": 0.333333,
+        "canonical_bases": 8,
+        "gc_fraction": 0.5,
+        "length": 12,
+        "n_bases": 2,
+        "sample_id": "toy_sample_1",
+        "sequence_id": "toy_beta"
+      },
+      {
+        "ambiguous_bases": 6,
+        "ambiguous_fraction": 1.0,
+        "canonical_bases": 0,
+        "gc_fraction": null,
+        "length": 6,
+        "n_bases": 6,
+        "sample_id": "toy_sample_2",
+        "sequence_id": "toy_gamma"
+      }
+    ],
+    "symbol_counts": {
+      "A": 8,
+      "B": 0,
+      "C": 8,
+      "D": 0,
+      "G": 8,
+      "H": 0,
+      "K": 0,
+      "M": 0,
+      "N": 8,
+      "R": 1,
+      "S": 0,
+      "T": 8,
+      "V": 0,
+      "W": 0,
+      "Y": 1
+    },
+    "total_bases": 42
+  },
+  "schema_version": "1.0",
+  "scope": "Descriptive DNA file checks; biological source and sequence accuracy are not verified.",
+  "tool_version": "0.1.0"
+}
