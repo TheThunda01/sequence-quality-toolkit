@@ -39,6 +39,8 @@ One file per row is supported by the quality-summary command. Separate mate file
 
 `cycles.csv` uses one-based `cycle`; `observed_bases` is the number of reads reaching that position. Its means/fractions use that denominator. `length_distribution.csv` has one row for each observed `(sample_id, length)` pair and its `read_count`.
 
+CSV exports prefix formula-like text with an apostrophe when it begins with `=`, `+`, `-`, or `@`, including after leading whitespace or a byte-order mark. This affects exported text such as an input filename; numeric values and blank fields keep their existing representation. JSON, JSON Lines, input files, and input-lock provenance retain the original values.
+
 ## Report provenance
 
 `report.json` records the manifest's byte hash, tool/schema versions, input raw-byte hashes, the caller's `dataset_label`, and the read-length limit. It has no timestamp, keeping repeated local runs byte-reproducible. The label is supplied by the caller and is not verified by the tool. Dataset-specific source attribution belongs in a provenance file, as in `examples/public/provenance.json`.
