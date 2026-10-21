@@ -21,7 +21,7 @@ One file per row is supported by the quality-summary command. Separate mate file
 | `min_length`, `max_length`, `mean_length` | Read-length summaries. Mean is weighted equally by reads. |
 | `canonical_bases` | Count of A, C, G, T. |
 | `ambiguous_bases`, `n_bases` | Non-ACGT accepted symbols; N alone is a subset. |
-| `gc_fraction` | (G+C)/(A+C+G+T), excluding all ambiguity symbols. `null` in JSON / blank in CSV if undefined. |
+| `gc_fraction` | $`\frac{G+C}{A+C+G+T}`$, excluding all ambiguity symbols. `null` in JSON / blank in CSV if undefined. |
 | `ambiguous_fraction`, `n_fraction` | Relevant symbol count divided by all accepted symbols. |
 | `base_weighted_mean_phred` | Sum of all Q scores divided by all sequence symbols. |
 | `q20_fraction`, `q30_fraction` | Fraction of symbols with Q≥20 or Q≥30. Thresholds are descriptive. |

@@ -56,7 +56,7 @@ The original workflow remains available, now with separate sample summaries:
 python sequence_qc.py --fasta examples/synthetic_sequences.fasta --manifest examples/manifest.csv --output-dir reports --dataset-label "Synthetic teaching fixture; not observed biological data"
 ```
 
-This checks duplicate or empty records, unsupported DNA symbols, and missing/extra manifest IDs. It reports sequence lengths, GC fraction, `(G+C)/(A+C+G+T)`, with an explicit denominator, ambiguity counts, and pooled **and per-sample** length N50, the record length reached when longest-first records cover at least half the total length. The included FASTA is synthetic: 3 records, 42 symbols, 10 ambiguous symbols. GC is `null` when no A/C/G/T bases are available; it is never silently set to zero.
+This checks duplicate or empty records, unsupported DNA symbols, and missing/extra manifest IDs. It reports sequence lengths, GC fraction, $`\frac{G+C}{A+C+G+T}`$, with an explicit denominator, ambiguity counts, and pooled **and per-sample** length N50, the record length reached when longest-first records cover at least half the total length. The included FASTA is synthetic: 3 records, 42 symbols, 10 ambiguous symbols. GC is `null` when no A/C/G/T bases are available; it is never silently set to zero.
 
 See the [FASTA report](reports/report.md), [methods](docs/methods.md), and [dictionary](docs/data-dictionary.md). N50 here describes supplied sequence lengths. It does not validate an assembly, and the pooled statistic across unrelated samples is not an assembly-quality measure.
 

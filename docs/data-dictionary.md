@@ -18,9 +18,9 @@ This page describes the FASTA workflow (a text header followed by sequence). A m
 | `sequence_id`, `sample_id` | Input identifiers. |
 | `length` | Integer count of all accepted sequence symbols. |
 | `canonical_bases` | Integer count of A, C, G, and T. |
-| `gc_fraction` | `(G + C) / (A + C + G + T)`, rounded to six decimals. JSON `null` / CSV blank when denominator is zero. |
+| `gc_fraction` | $`\frac{G+C}{A+C+G+T}`$, rounded to six decimals. JSON `null` / CSV blank when denominator is zero. |
 | `ambiguous_bases` | Count of R, Y, S, W, K, M, B, D, H, V, and N. |
-| `ambiguous_fraction` | `ambiguous_bases / length`, rounded to six decimals. |
+| `ambiguous_fraction` | $`\frac{\text{ambiguous bases}}{\text{length}}`$, rounded to six decimals. |
 | `n_bases` | Count of N alone; a subset of `ambiguous_bases`. |
 
 ## JSON summary and provenance

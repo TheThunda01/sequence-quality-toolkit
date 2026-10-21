@@ -10,7 +10,7 @@ The FASTA workflow answers a file-level question: are the records and their mani
 
 The accepted DNA alphabet follows the standard unambiguous bases and ambiguity codes shown in [NCBI's nucleotide-code reference](https://www.ncbi.nlm.nih.gov/sites/books/NBK44863/table/sequencesquickstart.Td/?report=objectonly). Ambiguity symbols describe allowed alternatives; this tool counts them but does not guess their underlying bases. The parser's restricted ID characters, rejection of gaps and `U`, and two-column manifest are project design decisions, not universal requirements of all FASTA readers.
 
-The GC fraction is defined here as `(G + C) / (A + C + G + T)`. All ambiguity symbols are excluded from that denominator, including S and W. This is an explicit convention, not a claim that it is the only possible GC definition. A sequence with no unambiguous bases has undefined GC. The aggregate GC value is calculated from all pooled symbols; averaging sequence percentages would give each short and long sequence equal influence, which is a different statistic.
+The GC fraction is defined here as $`\frac{G+C}{A+C+G+T}`$. All ambiguity symbols are excluded from that denominator, including S and W. This is an explicit convention, not a claim that it is the only possible GC definition. A sequence with no unambiguous bases has undefined GC. The aggregate GC value is calculated from all pooled symbols; averaging sequence percentages would give each short and long sequence equal influence, which is a different statistic.
 
 ## Length N50
 

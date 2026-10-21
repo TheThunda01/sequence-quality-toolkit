@@ -20,7 +20,7 @@ This toolkit calculates GC using only A, C, G, and T in the denominator. Ambiguo
 
 FASTA associates a sequence with a header. FASTQ also provides a quality score for each sequence position. Matching sequence and quality lengths is therefore a meaningful structural check: without that match, scores cannot be assigned unambiguously to positions.
 
-Phred quality expresses an estimated base-call error probability ([Illumina, n.d.](references.md#illumina-quality)): Q = −10 log10(p). Q20 corresponds to p=0.01 and Q30 to p=0.001 under that model. Those are predictions, not observed error frequencies. Calibration can differ across data, and a high score does not establish that a read maps uniquely or comes from the expected organism. Historical FASTQ encodings also differ, which is why the workflow requires an explicit Phred+33 declaration ([Cock et al., 2010](https://doi.org/10.1093/nar/gkp1137)).
+Phred quality expresses an estimated base-call error probability ([Illumina, n.d.](references.md#illumina-quality)): $`Q=-10\log_{10}(p)`$. Q20 corresponds to $`p=0.01`$ and Q30 to $`p=0.001`$ under that model. Those are predictions, not observed error frequencies. Calibration can differ across data, and a high score does not establish that a read maps uniquely or comes from the expected organism. Historical FASTQ encodings also differ, which is why the workflow requires an explicit Phred+33 declaration ([Cock et al., 2010](https://doi.org/10.1093/nar/gkp1137)).
 
 The mean of quality scores and the mean of their implied error probabilities answer different questions because the transformation is nonlinear. The reports keep score summaries separate from expected-error calculations rather than treating them as interchangeable evidence.
 

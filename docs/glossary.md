@@ -18,7 +18,7 @@ These terms explain the toolkit's reports and documentation. The two [data dicti
 | Biological replicate and technical run | A biological replicate samples a separate biological unit; a technical run measures prepared material. Neither two mates nor two files alone establish biological independence. |
 | Wild type | The archive's label for the study's reference condition; it does not mean this toolkit verified a genotype or identified the organism. |
 | IUPAC ambiguity codes | Standard letters specifying alternative bases. R means A/G, Y C/T, S C/G, W A/T, K G/T, M A/C, B C/G/T, D A/G/T, H A/C/T, V A/C/G, and N any DNA base. IUPAC names the International Union of Pure and Applied Chemistry. |
-| Canonical bases and GC fraction | Canonical here means A/C/G/T. GC fraction is `(G+C)/(A+C+G+T)`; all ambiguity symbols are excluded from its denominator. |
+| Canonical bases and GC fraction | Canonical here means A/C/G/T. GC fraction is $`\frac{G+C}{A+C+G+T}`$; all ambiguity symbols are excluded from its denominator. |
 | Assembly, contig, and N50 | An assembly reconstructs longer sequences; a contig is a contiguous assembled sequence. N50 is the length reached when longest-first records account for at least half of total length. Arbitrary-string N50 does not validate an assembly. |
 | Alignment, mapping quality, and variant | Alignment places a read against a reference. Mapping quality concerns confidence in that placement. A variant is a sequence difference relative to a reference. None is inferred here. |
 | Adapter, trimming, and contamination | An adapter is a technical sequence used in library preparation; trimming removes sequence portions; contamination is unintended material. This toolkit does not detect adapters, trim, or establish contamination status. |
@@ -27,7 +27,7 @@ These terms explain the toolkit's reports and documentation. The two [data dicti
 
 | Term | Meaning here |
 | --- | --- |
-| Phred score (Q) | A logarithmic estimate of base-call error: `Q = −10 log10(p)`, where `p` is the estimated error probability. Higher scores imply smaller predicted error probabilities. |
+| Phred score (Q) | A logarithmic estimate of base-call error: $`Q=-10\log_{10}(p)`$, where $`p`$ is the estimated error probability. Higher scores imply smaller predicted error probabilities. |
 | Phred+33 | Encoding a Q score as a text character whose ASCII numeric value is `Q+33`. A declared encoding is required; overlapping historical ranges prevent certain inference from characters alone. |
 | Q20 and Q30 fraction | Fraction of accepted symbols with scores at least 20 or 30. They are descriptive thresholds, not automatic pass/fail standards. |
 | Calibration and observed error | Calibration is agreement between predicted probabilities and observed frequencies. This toolkit has no truth reference for observing errors or checking calibration. |
