@@ -4,13 +4,13 @@ This page describes `sequence_qc.py`. The separate [FASTQ methods](fastq-methods
 
 ## Scope
 
-The FASTA workflow answers a file-level question: are the records and their manifest internally consistent, and what are their lengths and symbol counts? It does not perform read alignment, taxonomic classification, sequence assembly, variant calling, functional annotation, or reference comparison.
+The FASTA workflow answers a file-level question: are the records and their manifest internally consistent, and what are their lengths and symbol counts? FASTA stores identifiers and sequences; a manifest assigns those identifiers to user-supplied sample labels. It does not perform read alignment, taxonomic classification, sequence assembly, variant calling, functional annotation, or reference comparison.
 
 ## Symbols and GC
 
 The accepted DNA alphabet follows the standard unambiguous bases and ambiguity codes shown in [NCBI's nucleotide-code reference](https://www.ncbi.nlm.nih.gov/sites/books/NBK44863/table/sequencesquickstart.Td/?report=objectonly). Ambiguity symbols describe allowed alternatives; this tool counts them but does not guess their underlying bases. The parser's restricted ID characters, rejection of gaps and `U`, and two-column manifest are project design decisions, not universal requirements of all FASTA readers.
 
-GC is defined here as `(G + C) / (A + C + G + T)`. All ambiguity symbols are excluded from that denominator, including S and W. This is an explicit convention, not a claim that it is the only possible GC definition. A sequence with no unambiguous bases has undefined GC. The aggregate GC value is calculated from all pooled symbols; averaging sequence percentages would give each short and long sequence equal influence, which is a different statistic.
+The GC fraction is defined here as `(G + C) / (A + C + G + T)`. All ambiguity symbols are excluded from that denominator, including S and W. This is an explicit convention, not a claim that it is the only possible GC definition. A sequence with no unambiguous bases has undefined GC. The aggregate GC value is calculated from all pooled symbols; averaging sequence percentages would give each short and long sequence equal influence, which is a different statistic.
 
 ## Length N50
 
@@ -28,7 +28,4 @@ The FASTA implementation snapshots each file's bytes, then parses and fingerprin
 
 ## Sources
 
-1. National Center for Biotechnology Information. *Entrez Sequences Help: nucleotide codes*. https://www.ncbi.nlm.nih.gov/sites/books/NBK44863/table/sequencesquickstart.Td/?report=objectonly. Accessed 20 October 2026. Used for the accepted DNA-symbol vocabulary.
-2. National Center for Biotechnology Information. *NCBI Datasets: genome assembly report*. https://www.ncbi.nlm.nih.gov/datasets/docs/v2/reference-docs/data-reports/genome-assembly/. Accessed 20 October 2026. Used for the N50 length convention only; the project does not reproduce an NCBI assembly analysis.
-
-The fixture counts and reported values come from executing this repository, not from these sources. No empirical biological conclusion is drawn from them.
+[NCBI's nucleotide-code table](references.md#ncbi-codes) supports the DNA-symbol vocabulary; [NCBI's assembly report](references.md#ncbi-assembly) supports the N50 convention. Complete metadata and current access levels are in [References](references.md) and the [reference audit](reference-audit.json). Fixture counts come from executing this repository, not those sources.

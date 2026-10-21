@@ -1,5 +1,7 @@
 # FASTQ data dictionary
 
+FASTQ stores a sequence and one encoded quality score per position. A manifest declares the input files and labels. See the [glossary](glossary.md) for Phred, GC, JSON, and other terms.
+
 ## Manifest
 
 | Field | Rule |

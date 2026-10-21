@@ -2,11 +2,11 @@
 
 ## What is included
 
-`examples/public/ERR458493_first1000.fastq.gz` contains the first 1,000 archived records from **ERR458493**, an Illumina HiSeq 2000 single-end RNA-seq run submitted by Dundee. The official record labels the organism *Saccharomyces cerevisiae*, the library `wild type`, and the project **PRJEB5348**. See the [NCBI run record](https://www.ncbi.nlm.nih.gov/sra/ERR458493) and [ENA project](https://www.ebi.ac.uk/ena/browser/view/PRJEB5348).
+`examples/public/ERR458493_first1000.fastq.gz` contains the first 1,000 archived records from **ERR458493**, an Illumina HiSeq 2000 single-end RNA-sequencing (RNA-seq) run submitted by Dundee. The official record labels the organism *Saccharomyces cerevisiae*, the library `wild type`, and the project **PRJEB5348**. See the [NCBI run record](https://www.ncbi.nlm.nih.gov/sra/ERR458493) and [ENA project](https://www.ebi.ac.uk/ena/browser/view/PRJEB5348).
 
 This is a convenience prefix, not random sampling. Read order can correlate with technical features. Its summaries are useful for checking code on real archived reads, not for judging the entire run or comparing conditions. Organism and library labels come from the archive; the project does not independently verify them.
 
-The underlying experiment is described in Schurch et al. (2016), [*How many biological replicates are needed in an RNA-seq experiment and which differential expression tool should you use?*](https://doi.org/10.1261/rna.053959.115), *RNA*, 22(6), 839–851. The associated [erratum](https://doi.org/10.1261/rna.058339.116) is also available. This repository uses a tiny read excerpt for QC and does not reproduce the paper's expression analysis or its conclusions.
+The underlying experiment is described in Schurch et al. (2016), [*How many biological replicates are needed in an RNA-seq experiment and which differential expression tool should you use?*](https://doi.org/10.1261/rna.053959.115), *RNA*, 22(6), 839–851. The associated [erratum (Schurch et al., 2016)](https://doi.org/10.1261/rna.058339.116) is also available. This repository uses a tiny read excerpt for QC and does not reproduce the paper's expression analysis or its conclusions.
 
 ## How the excerpt was made
 
@@ -21,9 +21,11 @@ On 20 October 2026, the [ENA file report](https://www.ebi.ac.uk/ena/portal/api/f
 | Subset gzip bytes | 51,967 |
 | Subset gzip SHA-256 | `4e380e55e0dfa36b1439c57138e123c59af4da2a289a0d2adfca085c2d6e76b4` |
 
-The complete download matched the archive's size and MD5. Original record bytes were preserved in the selected prefix and compressed with a fixed timestamp and no embedded filename. The JSON [provenance record](../examples/public/provenance.json) additionally stores the uncompressed-content SHA-256 and first/last identifiers. This identifies exactly what was used; a checksum does not validate biology.
+The earlier recorded extraction verified that the complete download matched the archive's size and MD5. Original record bytes were preserved in the selected prefix and compressed with a fixed timestamp and no embedded filename. The JSON [provenance record](../examples/public/provenance.json) additionally stores the uncompressed-content SHA-256 and first/last identifiers. This identifies exactly what was used; a checksum does not validate biology.
 
-The Phred+33 declaration follows the documented [ENA archive-generated FASTQ format](https://ena-docs.readthedocs.io/en/latest/retrieval/file-download/archive-generated-files.html), not a guess from the characters.
+Phred+33 encodes each quality score by adding 33 to obtain its ASCII character value. The declaration follows the documented [ENA archive-generated FASTQ format](https://ena-docs.readthedocs.io/en/latest/retrieval/file-download/archive-generated-files.html), not a guess from the characters.
+
+This review rechecked the included files and provenance, but could not reopen the live run/project metadata endpoints. It did not repeat the complete download. See [the source audit](reference-audit.json) for that access limitation.
 
 ## Rebuild or use the full run
 

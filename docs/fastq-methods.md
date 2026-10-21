@@ -1,16 +1,18 @@
 # FASTQ methods and interpretation
 
+FASTQ stores a sequence and one encoded quality score per position. The [glossary](glossary.md) and [assumptions](assumptions.md) explain the vocabulary and interpretation limits.
+
 ## File parsing and explicit encoding
 
 The parser reads one record at a time and accepts wrapped sequence/quality lines. It checks the `@` header, `+` separator, optional repeated identifier, nonempty DNA sequence, and equal sequence/quality lengths. In a quality string, `@` and `+` are ordinary characters. Line breaks are removed; other whitespace in sequences or qualities is rejected. Read IDs are the first whitespace-delimited header token; descriptions are ignored. Duplicate read IDs are not checked in this streaming mode.
 
-The manifest must declare `phred33`. Printable ASCII 33–126 maps to Q=0–93; this follows the Sanger FASTQ convention described by [Cock et al. (2010)](https://doi.org/10.1093/nar/gkp1137). This is a format bound, not a claim that a particular instrument produces every score. The overlapping character ranges of historical encodings make automatic detection unreliable. Declaring the wrong encoding can produce plausible but wrong summaries; the tool cannot rule that out.
+The manifest must declare `phred33`. Printable ASCII (a numeric character encoding) values 33–126 maps to Q=0–93; this follows the Sanger FASTQ convention described by [Cock et al. (2010)](https://doi.org/10.1093/nar/gkp1137). This is a format bound, not a claim that a particular instrument produces every score. The overlapping character ranges of historical encodings make automatic detection unreliable. Declaring the wrong encoding can produce plausible but wrong summaries; the tool cannot rule that out.
 
 The accepted DNA symbols and GC denominator match the [FASTA methods](methods.md). Gzip is detected from its magic bytes, not the filename. Python's gzip reader validates compressed streams when they are read to the end; truncated or corrupt inputs fail. A one-million-symbol per-read limit bounds malformed-record accumulation. This is an implementation limit, not a biological cutoff.
 
 ## Quality statistics
 
-Q is a base-caller estimate on a logarithmic scale: Q = −10 log10(p), so its implied error probability is p = 10^(−Q/10). Per-read expected errors sum those implied probabilities. The result depends on score calibration and is not a counted or experimentally measured error rate. Averaging Q and transforming it back to a probability is not the same as averaging probabilities; both are kept conceptually separate here.
+Q is a base-caller estimate on a logarithmic scale ([Illumina, n.d.](references.md#illumina-quality)): Q = −10 log10(p), so its implied error probability is p = 10^(−Q/10). Per-read expected errors sum those implied probabilities. Linearity of expectation permits this sum without assuming independent errors at different positions. Its interpretation depends on score calibration (agreement between predicted probabilities and observed error frequencies) and is not a counted or experimentally measured error rate. Averaging Q and transforming it back to a probability is not the same as averaging probabilities; both are kept conceptually separate here.
 
 Per-read mean Q averages its base scores. The sample mean Q weights all bases equally, so longer reads contribute more. Q20 and Q30 fractions count bases meeting those score cutoffs. They are summaries, not universal acceptance rules. At cycle k, only reads with length at least k contribute; the output includes that denominator. No sequence position is padded with a score of zero.
 
@@ -38,8 +40,4 @@ See [related GitHub tools](related-tools.md) for the SeqKit and seqtk behavior i
 
 ## References
 
-- Cock PJA, Fields CJ, Goto N, Heuer ML, Rice PM. (2010). The Sanger FASTQ file format for sequences with quality scores, and the Solexa/Illumina FASTQ variants. *Nucleic Acids Research*, 38(6), 1767–1771. https://doi.org/10.1093/nar/gkp1137.
-- Andrews S. FastQC documentation. Babraham Bioinformatics. https://www.bioinformatics.babraham.ac.uk/projects/fastqc/. Accessed 20 October 2026.
-- Chen S, Zhou Y, Chen Y, Gu J. (2018). fastp: an ultra-fast all-in-one FASTQ preprocessor. *Bioinformatics*, 34(17), i884–i890. https://doi.org/10.1093/bioinformatics/bty560.
-- Ewels P, Magnusson M, Lundin S, Käller M. (2016). MultiQC: summarize analysis results for multiple tools and samples in a single report. *Bioinformatics*, 32(19), 3047–3048. https://doi.org/10.1093/bioinformatics/btw354.
-- ENA. Archive-generated files. https://ena-docs.readthedocs.io/en/latest/retrieval/file-download/archive-generated-files.html. Accessed 20 October 2026. Defines the archive's Phred+33 output convention used for this public example.
+See the [complete bibliography](references.md) for Cock et al. (2010), Chen et al. (2018), Ewels et al. (2016), FastQC, ENA, and the quality-score definition, with DOIs, PMIDs, and access limits in the [reference audit](reference-audit.json).

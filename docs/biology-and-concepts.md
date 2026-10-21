@@ -1,16 +1,18 @@
 # Biology and concepts behind the checks
 
+See the [glossary](glossary.md) for a compact vocabulary reference and [assumptions](assumptions.md) for the scope of each claim.
+
 ## What a sequencing read represents
 
 A read is a sequence reported by a sequencing instrument and its analysis software. In the short-read example here, it covers part of a library molecule, rather than a complete chromosome or gene. DNA sequencing and RNA sequencing therefore produce collections of observations that need additional analysis before they can answer biological questions.
 
-In many RNA-seq workflows, RNA is represented by complementary DNA, or cDNA, before sequencing. That is why a file from an RNA experiment can use the DNA alphabet, including T, rather than U. Early yeast RNA-seq work illustrates this connection between cDNA reads and transcript measurements ([Nagalakshmi et al., 2008](https://doi.org/10.1126/science.1158441)). A read count is not automatically a molecule count: how the library was prepared, which fragments were sequenced, and how reads are assigned all matter.
+In many RNA-sequencing (RNA-seq) workflows, RNA is represented by complementary DNA, or cDNA, before sequencing. That is why a file from an RNA experiment can use the DNA alphabet, including T, rather than U. Early yeast RNA-seq work illustrates this connection between cDNA reads and transcript measurements ([Nagalakshmi et al., 2008](https://doi.org/10.1126/science.1158441)). A read count is not automatically a molecule count: how the library was prepared, which fragments were sequenced, and how reads are assigned all matter.
 
 ## Bases, ambiguity, and complementarity
 
-DNA is commonly represented with A, C, G, and T. In ordinary complementary DNA pairing, A pairs with T and C with G; RNA uses U in place of T. The two DNA strands run in opposite directions, so a reverse complement changes both the base letters and their order ([NCBI: DNA structure](https://www.ncbi.nlm.nih.gov/books/NBK26821/); [RNA structure](https://www.ncbi.nlm.nih.gov/books/NBK26887/)).
+DNA is commonly represented with A, C, G, and T. In ordinary complementary DNA pairing, A pairs with T and C with G; RNA uses U in place of T. The two DNA strands run in opposite directions, so a reverse complement changes both the base letters and their order ([Alberts et al. (2002): DNA structure](https://www.ncbi.nlm.nih.gov/books/NBK26821/); [Alberts et al. (2002): From DNA to RNA](https://www.ncbi.nlm.nih.gov/books/NBK26887/)).
 
-Some sequence positions use ambiguity codes. For example, R allows A or G, while N allows any of the four DNA bases. These symbols describe uncertainty or alternatives at a position; they are not extra DNA bases ([NCBI nucleotide codes](https://www.ncbi.nlm.nih.gov/books/NBK44863/table/sequencesquickstart.Td/?report=objectonly)). An N count can reveal how often the file leaves a base unspecified, but it does not explain why.
+Some sequence positions use ambiguity codes. For example, R allows A or G, while N allows any of the four DNA bases. These International Union of Pure and Applied Chemistry (IUPAC) symbols describe uncertainty or alternatives at a position; they are not extra DNA bases ([NCBI nucleotide codes](https://www.ncbi.nlm.nih.gov/books/NBK44863/table/sequencesquickstart.Td/?report=objectonly)). An N count can reveal how often the file leaves a base unspecified, but it does not explain why.
 
 This toolkit calculates GC using only A, C, G, and T in the denominator. Ambiguous positions are excluded, even when an ambiguity code constrains the possibilities. That explicit convention makes comparisons interpretable; it does not make GC a test of sample identity or purity.
 
@@ -18,13 +20,13 @@ This toolkit calculates GC using only A, C, G, and T in the denominator. Ambiguo
 
 FASTA associates a sequence with a header. FASTQ also provides a quality score for each sequence position. Matching sequence and quality lengths is therefore a meaningful structural check: without that match, scores cannot be assigned unambiguously to positions.
 
-Phred quality expresses an estimated base-call error probability: Q = −10 log10(p). Q20 corresponds to p=0.01 and Q30 to p=0.001 under that model. Those are predictions, not observed error frequencies. Calibration can differ across data, and a high score does not establish that a read maps uniquely or comes from the expected organism. Historical FASTQ encodings also differ, which is why the workflow requires an explicit Phred+33 declaration ([Cock et al., 2010](https://doi.org/10.1093/nar/gkp1137)).
+Phred quality expresses an estimated base-call error probability ([Illumina, n.d.](references.md#illumina-quality)): Q = −10 log10(p). Q20 corresponds to p=0.01 and Q30 to p=0.001 under that model. Those are predictions, not observed error frequencies. Calibration can differ across data, and a high score does not establish that a read maps uniquely or comes from the expected organism. Historical FASTQ encodings also differ, which is why the workflow requires an explicit Phred+33 declaration ([Cock et al., 2010](https://doi.org/10.1093/nar/gkp1137)).
 
 The mean of quality scores and the mean of their implied error probabilities answer different questions because the transformation is nonlinear. The reports keep score summaries separate from expected-error calculations rather than treating them as interchangeable evidence.
 
 ## Why per-cycle denominators matter
 
-A cycle summary groups positions by their order within each read. If one read is 50 bases long and another is 75, both contribute to cycle 40, but only the longer read contributes to cycle 60. Filling the missing position with zero would invent an observation and lower the mean incorrectly.
+A cycle (read-position) summary groups positions by their order within each read. If one read is 50 bases long and another is 75, both contribute to cycle 40, but only the longer read contributes to cycle 60. Filling the missing position with zero would invent an observation and lower the mean incorrectly.
 
 The toolkit therefore reports how many reads reach each position. Changes near the end of a plot can reflect both a change in quality and a change in which reads remain represented. These summaries describe the supplied files; they do not identify the cause of a pattern.
 
@@ -52,5 +54,5 @@ The prefix tests the software on real archived data. It is not a random or repre
 
 - [Public-data provenance](public-data.md): source verification, selection, and reuse terms.
 - [FASTQ methods](fastq-methods.md): exact calculations and implementation boundaries.
-- [Cock et al.](https://doi.org/10.1093/nar/gkp1137): FASTQ conventions and quality encodings.
-- [Schurch et al.](https://doi.org/10.1261/rna.053959.115): the source study and its biological-replication context.
+- [Cock et al. (2010)](https://doi.org/10.1093/nar/gkp1137): FASTQ conventions and quality encodings.
+- [Schurch et al. (2016)](https://doi.org/10.1261/rna.053959.115): the source study and its biological-replication context.

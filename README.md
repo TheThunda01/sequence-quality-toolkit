@@ -1,12 +1,12 @@
 # Sequence Quality Toolkit
 
-This project asks a practical question: **what can we learn from sequence files before doing biological analysis?** It checks FASTA records against a manifest and summarizes raw FASTQ quality scores without changing the reads. The code is small enough to follow, with tests for details that can quietly change a result.
+This project asks a practical question: **what can we learn from sequence files before doing biological analysis?** It checks FASTA (sequence-and-header) records against a manifest, a table of expected records, and summarizes FASTQ (sequence, header, and per-position quality) files without changing the reads. The code is small enough to follow, with tests for details that can quietly change a result.
 
 **[Project context: background, purpose, and key themes](docs/project-context.md)**
 
 **[Biology and concepts: reads, quality scores, pairs, and interpretation](docs/biology-and-concepts.md)**
 
-**Version 0.3.0:** working educational software with a real public yeast RNA-seq example and deliberately imperfect synthetic fixtures. Python 3.12; standard library only; no network access during QC.
+**Version 0.3.0:** working educational software with a real public yeast RNA-sequencing (RNA-seq) example and deliberately imperfect synthetic fixtures. Python 3.12; standard library only; no network access during QC.
 
 ## Why this project
 
@@ -17,10 +17,10 @@ Small file-handling decisions can change what a sequence summary means. This pro
 ### FASTQ quality summaries
 
 - Streams plain-text or gzip files, including wrapped sequence and quality lines.
-- Requires an explicit `phred33` declaration instead of guessing the quality encoding.
+- Requires an explicit `phred33` declaration (quality characters encode the score plus 33) instead of guessing the quality encoding.
 - Checks headers, separators, DNA symbols, sequence/quality length agreement, and printable quality bounds.
-- Writes per-read metrics as JSON Lines while retaining summary counters in memory.
-- Produces per-sample and per-cycle quality summaries, exact read-length distributions, N/ambiguity counts, and raw-input SHA-256 fingerprints.
+- Writes per-read metrics as JSON Lines (one structured text object per line) while retaining summary counters in memory.
+- Produces per-sample and per-cycle quality summaries, exact read-length distributions, N/ambiguity counts, and raw-input SHA-256 fingerprints (identifiers calculated from exact file bytes).
 - Validates every sample before replacing reports, so a malformed later file does not replace an earlier valid report set.
 
 The [synthetic example](reports/fastq_synthetic/report.md) makes low-quality scores and variable lengths easier to see:
@@ -56,7 +56,7 @@ The original workflow remains available, now with separate sample summaries:
 python sequence_qc.py --fasta examples/synthetic_sequences.fasta --manifest examples/manifest.csv --output-dir reports --dataset-label "Synthetic teaching fixture; not observed biological data"
 ```
 
-This checks duplicate or empty records, unsupported DNA symbols, and missing/extra manifest IDs. It reports sequence lengths, GC with an explicit denominator, ambiguity counts, and pooled **and per-sample** length N50. The included FASTA is synthetic: 3 records, 42 symbols, 10 ambiguous symbols. GC is `null` when no A/C/G/T bases are available; it is never silently set to zero.
+This checks duplicate or empty records, unsupported DNA symbols, and missing/extra manifest IDs. It reports sequence lengths, GC fraction, `(G+C)/(A+C+G+T)`, with an explicit denominator, ambiguity counts, and pooled **and per-sample** length N50, the record length reached when longest-first records cover at least half the total length. The included FASTA is synthetic: 3 records, 42 symbols, 10 ambiguous symbols. GC is `null` when no A/C/G/T bases are available; it is never silently set to zero.
 
 See the [FASTA report](reports/report.md), [methods](docs/methods.md), and [dictionary](docs/data-dictionary.md). N50 here describes supplied sequence lengths. It does not validate an assembly, and the pooled statistic across unrelated samples is not an assembly-quality measure.
 
@@ -117,7 +117,7 @@ The [practical-use guide](docs/practical-use.md) explains how to transfer and ve
 
 ### Integrated input check
 
-The optional `--input-lock` flag now enforces the declared fingerprints within QC and checks the raw bytes actually consumed before publishing reports. Without the flag, earlier behavior is preserved. It does not authenticate sample identity or prevent concurrent filesystem changes; see the [updated contract](docs/practical-use.md).
+The optional `--input-lock` flag enforces the declared fingerprints within QC and checks the raw bytes actually consumed before publishing reports. Without the flag, earlier behavior is preserved. It does not authenticate sample identity or prevent concurrent filesystem changes; see the [updated contract](docs/practical-use.md).
 
 ## Documentation
 
@@ -127,7 +127,11 @@ The optional `--input-lock` flag now enforces the declared fingerprints within Q
 | [Biology and concepts](docs/biology-and-concepts.md) | Reads, quality scores, pairing, and interpretation |
 | [FASTA methods](docs/methods.md) / [FASTQ methods](docs/fastq-methods.md) | Exact contracts and calculations |
 | [Paired-file methods](docs/paired-fastq.md) | Supported naming conventions and limits |
-| [References and related tools](docs/related-tools.md) | Attribution and relationship to other software |
+| [References](docs/references.md) / [related tools](docs/related-tools.md) | Complete bibliography and relationship to other software |
+| [Glossary](docs/glossary.md) | Biological, statistical, and computing vocabulary |
+| [Assumptions](docs/assumptions.md) | Rationale, checks, and consequences of material assumptions |
+| [Reference audit](docs/reference-audit.json) | Source-by-source verification and access limits |
+| [Scientific and editorial review](docs/review-2026-10-20.md) | Corrections, coverage, and verification results |
 | [Public-data provenance](docs/public-data.md) | Source, extraction, checksums, and reuse terms |
 | [Practical use](docs/practical-use.md) | Input locks, worked use case, and next improvements |
 | [Literature review](docs/literature-review.md) | Bounded review supporting this extension |
@@ -141,6 +145,6 @@ make test
 make demo
 ```
 
-`make demo` regenerates all five report sets without downloading data. GitHub Actions runs the tests and verifies that regenerated reports match the committed results. To rebuild the public subset itself, use [the documented retrieval script](docs/public-data.md); that optional step downloads about 60 MB and validates the complete archive before extracting 1,000 reads.
+`make demo` regenerates all five report sets without downloading data. The GitHub Actions workflow specifies continuous integration checks that run the tests and verifies that regenerated reports match the committed results. To rebuild the public subset itself, use [the documented retrieval script](docs/public-data.md); that optional step downloads about 60 MB and validates the complete archive before extracting 1,000 reads.
 
 The input-lock format has schema version 1.0. Existing scientific reports and toolkit calculation versions are retained. `make audit` checks the public input lock. See [CONTRIBUTING.md](CONTRIBUTING.md) for contributions and implementation provenance.

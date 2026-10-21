@@ -1,5 +1,7 @@
 # Project context
 
+FASTA stores a sequence and header; FASTQ adds a quality value at each sequence position. Quality control (QC) here means checking these files and summarizing their declared measurements.
+
 ## Background and rationale
 
 Before asking a biological question with sequencing data, it helps to understand the files themselves. Are the records readable? Do sample labels match the data? What do the read lengths and quality scores look like? FASTQ stores both sequence and estimated base-call quality, and its historical encoding variants make assumptions about those scores important ([Cock et al., 2010](https://doi.org/10.1093/nar/gkp1137)).
@@ -28,5 +30,7 @@ Established tools such as [FastQC](https://www.bioinformatics.babraham.ac.uk/pro
 - **Software practice:** stream read data, test edge cases, and explain failures.
 
 ## How to read the public example
+
+The [glossary](glossary.md) defines the terms, and [assumptions](assumptions.md) states what is checked and what remains untested. N50 describes a length distribution; GC describes a declared fraction of sequence symbols. Neither identifies an organism or validates an assembly.
 
 The real-data example contains the first 1,000 reads from [ERR458493](https://www.ncbi.nlm.nih.gov/sra/ERR458493), linked to [Schurch et al. (2016)](https://doi.org/10.1261/rna.053959.115). It is a convenience prefix, not a representative sample. Its results describe that excerpt only; they do not assess the whole run, reproduce the study, verify organism identity, or establish a biological effect. Quality scores are estimates, not observed error counts.

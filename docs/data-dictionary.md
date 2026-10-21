@@ -1,13 +1,13 @@
 # Data dictionary
 
-This page describes the FASTA workflow. The separate [FASTQ dictionary](fastq-data-dictionary.md) covers read-quality outputs.
+This page describes the FASTA workflow (a text header followed by sequence). A manifest is the table mapping sequence identifiers to user-supplied sample labels; [the glossary](glossary.md) defines technical terms. The separate [FASTQ dictionary](fastq-data-dictionary.md) covers read-quality outputs.
 
 ## Inputs
 
 | File/field | Meaning | Validation |
 | --- | --- | --- |
 | FASTA identifier | First whitespace-delimited token after `>`. | Unique, nonempty, restricted identifier characters. Descriptions are ignored. |
-| FASTA sequence | Concatenated nonblank sequence lines. | Nonempty; DNA IUPAC subset `ACGTRYSWKMBDHVN`; lowercase converted to uppercase. |
+| FASTA sequence | Concatenated nonblank sequence lines. | Nonempty; DNA ambiguity-code subset (IUPAC) `ACGTRYSWKMBDHVN`; lowercase converted to uppercase. |
 | `sequence_id` | FASTA identifier in the manifest. | Exactly one row for each FASTA record. |
 | `sample_id` | User-assigned grouping label. | Required; same character contract as identifiers. Not a verified biological identity. |
 
@@ -29,6 +29,6 @@ This page describes the FASTA workflow. The separate [FASTQ dictionary](fastq-da
 
 `samples.csv` and the JSON `samples` list contain one summary for each distinct manifest sample label: sequence count, total/canonical/ambiguous symbol counts, GC fraction with the same denominator, and length N50 restricted to that sample's records. A grouping label alone does not establish that those records form an assembly.
 
-`inputs` contains the two input basenames and SHA-256 digests of their bytes, including line endings. `dataset_label` is the caller's text, not a label inferred or independently verified by the tool. `schema_version` identifies the report format; `tool_version` identifies the implementation. Reports omit timestamps and absolute paths so the same inputs and label produce identical report bytes in the supported environment.
+`inputs` contains the two input basenames and SHA-256 fingerprints of their bytes, including line endings. `dataset_label` is the caller's text, not a label inferred or independently verified by the tool. `schema_version` identifies the report format; `tool_version` identifies the implementation. Reports omit timestamps and absolute paths so the same inputs and label produce identical report bytes in the supported environment.
 
 Identifiers are exported as text. Even with the restricted character set, consumers should import identifier columns as text to preserve leading zeros or values that spreadsheet software may interpret as dates.

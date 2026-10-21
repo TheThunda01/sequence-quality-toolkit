@@ -1,0 +1,588 @@
+{
+  "review_date": "2026-10-20",
+  "scope": "All substantive sources cited in authored documentation and adopted sources in the preserved provenance/search records. Repeated links to the same source are grouped; title-screened exclusions are search history, not adopted evidence.",
+  "limits": [
+    "Current source checks occurred on 2026-10-21 UTC for the 2026-10-20 local-date review.",
+    "Matching metadata does not establish claim support. Access levels record this pass only; prior full-text retrieval records are preserved without being claimed as repeated.",
+    "No external tool benchmark, exhaustive systematic review, or independent biological validation was performed."
+  ],
+  "references": [
+    {
+      "id": "cock-2010",
+      "source_type": "peer-reviewed article",
+      "title": "The Sanger FASTQ file format for sequences with quality scores, and the Solexa/Illumina FASTQ variants.",
+      "authors": "Cock PJA et al.",
+      "year": 2010,
+      "url": "https://doi.org/10.1093/nar/gkp1137",
+      "doi": "10.1093/nar/gkp1137",
+      "checked_on": "2026-10-21",
+      "access_level": "abstract",
+      "metadata_status": "corrected",
+      "supported_claims": [
+        "Historical FASTQ variants use incompatible sequence-quality encodings."
+      ],
+      "limitations": [
+        "Primary full text could not be reopened in this review; PMC verification pages or publisher access errors limited current appraisal to PubMed metadata and abstract.",
+        "Earlier full-text appraisal remains historical. Exact current score equation is also supported by official Illumina documentation."
+      ],
+      "corrections": [
+        "Standardized author-list style and completed PMID."
+      ],
+      "journal": "Nucleic Acids Research",
+      "volume_issue": "38(6)",
+      "pages_or_article": "1767–1771",
+      "pmid": "20015970",
+      "alternate_urls": [
+        "https://pubmed.ncbi.nlm.nih.gov/20015970/"
+      ]
+    },
+    {
+      "id": "ewels-2016",
+      "source_type": "peer-reviewed article",
+      "title": "MultiQC: summarize analysis results for multiple tools and samples in a single report.",
+      "authors": "Ewels P et al.",
+      "year": 2016,
+      "url": "https://doi.org/10.1093/bioinformatics/btw354",
+      "doi": "10.1093/bioinformatics/btw354",
+      "checked_on": "2026-10-21",
+      "access_level": "abstract",
+      "metadata_status": "verified",
+      "supported_claims": [
+        "MultiQC aggregates results from multiple tools and samples."
+      ],
+      "limitations": [
+        "Primary full text could not be reopened in this review; PMC verification pages or publisher access errors limited current appraisal to PubMed metadata and abstract.",
+        "No MultiQC integration or equivalence test is implemented."
+      ],
+      "corrections": [],
+      "journal": "Bioinformatics",
+      "volume_issue": "32(19)",
+      "pages_or_article": "3047–3048",
+      "pmid": "27312411",
+      "alternate_urls": [
+        "https://pubmed.ncbi.nlm.nih.gov/27312411/"
+      ]
+    },
+    {
+      "id": "chen-2018",
+      "source_type": "peer-reviewed article",
+      "title": "fastp: an ultra-fast all-in-one FASTQ preprocessor.",
+      "authors": "Chen S et al.",
+      "year": 2018,
+      "url": "https://doi.org/10.1093/bioinformatics/bty560",
+      "doi": "10.1093/bioinformatics/bty560",
+      "checked_on": "2026-10-21",
+      "access_level": "abstract",
+      "metadata_status": "verified",
+      "supported_claims": [
+        "fastp covers broader quality control and preprocessing, including trimming/filtering."
+      ],
+      "limitations": [
+        "Primary full text could not be reopened in this review; PMC verification pages or publisher access errors limited current appraisal to PubMed metadata and abstract.",
+        "Published performance was not reproduced."
+      ],
+      "corrections": [],
+      "journal": "Bioinformatics",
+      "volume_issue": "34(17)",
+      "pages_or_article": "i884–i890",
+      "pmid": "30423086",
+      "alternate_urls": [
+        "https://pubmed.ncbi.nlm.nih.gov/30423086/"
+      ]
+    },
+    {
+      "id": "chen-2023",
+      "source_type": "peer-reviewed article",
+      "title": "Ultrafast one-pass FASTQ data preprocessing, quality control, and deduplication using fastp.",
+      "authors": "Chen S.",
+      "year": 2023,
+      "url": "https://doi.org/10.1002/imt2.107",
+      "doi": "10.1002/imt2.107",
+      "checked_on": "2026-10-21",
+      "access_level": "abstract",
+      "metadata_status": "verified",
+      "supported_claims": [
+        "Describes fastp preprocessing and duplication-related capabilities."
+      ],
+      "limitations": [
+        "Primary full text could not be reopened in this review; PMC verification pages or publisher access errors limited current appraisal to PubMed metadata and abstract.",
+        "Capabilities belong to fastp, not this toolkit."
+      ],
+      "corrections": [],
+      "journal": "iMeta",
+      "volume_issue": "2(2)",
+      "pages_or_article": "e107",
+      "pmid": "38868435",
+      "alternate_urls": [
+        "https://pubmed.ncbi.nlm.nih.gov/38868435/"
+      ]
+    },
+    {
+      "id": "chen-2025",
+      "source_type": "peer-reviewed article",
+      "title": "fastp 1.0: An ultra-fast all-round tool for FASTQ data quality control and preprocessing.",
+      "authors": "Chen S.",
+      "year": 2025,
+      "url": "https://doi.org/10.1002/imt2.70078",
+      "doi": "10.1002/imt2.70078",
+      "checked_on": "2026-10-21",
+      "access_level": "abstract",
+      "metadata_status": "verified",
+      "supported_claims": [
+        "Documents later fastp development relevant to reporting and batch processing."
+      ],
+      "limitations": [
+        "Primary full text could not be reopened in this review; PMC verification pages or publisher access errors limited current appraisal to PubMed metadata and abstract.",
+        "Article title version 1.0 is distinct from a later inspected repository version."
+      ],
+      "corrections": [],
+      "journal": "iMeta",
+      "volume_issue": "4(5)",
+      "pages_or_article": "e70078",
+      "pmid": "41112039",
+      "alternate_urls": [
+        "https://pubmed.ncbi.nlm.nih.gov/41112039/"
+      ]
+    },
+    {
+      "id": "nazari-2025",
+      "source_type": "peer-reviewed article",
+      "title": "Lossless and reference-free compression of FASTQ/A files using GeneSqueeze.",
+      "authors": "Nazari F et al.",
+      "year": 2025,
+      "url": "https://doi.org/10.1038/s41598-024-79258-6",
+      "doi": "10.1038/s41598-024-79258-6",
+      "checked_on": "2026-10-21",
+      "access_level": "abstract",
+      "metadata_status": "verified",
+      "supported_claims": [
+        "The study concerns lossless representation of FASTQ/A components."
+      ],
+      "limitations": [
+        "Primary full text could not be reopened in this review; PMC verification pages or publisher access errors limited current appraisal to PubMed metadata and abstract.",
+        "No compressor was run; raw-byte versus decoded-content equality is this project's engineering distinction."
+      ],
+      "corrections": [],
+      "journal": "Scientific Reports",
+      "volume_issue": "15(1)",
+      "pages_or_article": "322",
+      "pmid": "39747361",
+      "alternate_urls": [
+        "https://pubmed.ncbi.nlm.nih.gov/39747361/"
+      ]
+    },
+    {
+      "id": "nagalakshmi-2008",
+      "source_type": "peer-reviewed article",
+      "title": "The transcriptional landscape of the yeast genome defined by RNA sequencing.",
+      "authors": "Nagalakshmi U et al.",
+      "year": 2008,
+      "url": "https://doi.org/10.1126/science.1158441",
+      "doi": "10.1126/science.1158441",
+      "checked_on": "2026-10-21",
+      "access_level": "abstract",
+      "metadata_status": "verified",
+      "supported_claims": [
+        "Provides historical context for cDNA-based yeast RNA-seq and transcript measurement."
+      ],
+      "limitations": [
+        "Primary full text could not be reopened in this review; PMC verification pages or publisher access errors limited current appraisal to PubMed metadata and abstract.",
+        "This is background literature, not the source study for ERR458493."
+      ],
+      "corrections": [],
+      "journal": "Science",
+      "volume_issue": "320(5881)",
+      "pages_or_article": "1344–1349",
+      "pmid": "18451266",
+      "alternate_urls": [
+        "https://pubmed.ncbi.nlm.nih.gov/18451266/"
+      ]
+    },
+    {
+      "id": "schurch-2016",
+      "source_type": "peer-reviewed article",
+      "title": "How many biological replicates are needed in an RNA-seq experiment and which differential expression tool should you use?",
+      "authors": "Schurch NJ et al.",
+      "year": 2016,
+      "url": "https://doi.org/10.1261/rna.053959.115",
+      "doi": "10.1261/rna.053959.115",
+      "checked_on": "2026-10-21",
+      "access_level": "abstract",
+      "metadata_status": "verified",
+      "supported_claims": [
+        "The source study investigated biological replication and differential-expression methods in yeast."
+      ],
+      "limitations": [
+        "Primary full text could not be reopened in this review; PMC verification pages or publisher access errors limited current appraisal to PubMed metadata and abstract.",
+        "The toolkit does not reproduce its expression analysis or transfer its recommendations to a 1,000-read prefix."
+      ],
+      "corrections": [],
+      "journal": "RNA",
+      "volume_issue": "22(6)",
+      "pages_or_article": "839–851",
+      "pmid": "27022035",
+      "alternate_urls": [
+        "https://pubmed.ncbi.nlm.nih.gov/27022035/"
+      ]
+    },
+    {
+      "id": "schurch-erratum-2016",
+      "source_type": "peer-reviewed article",
+      "title": "Erratum: How many biological replicates are needed in an RNA-seq experiment and which differential expression tool should you use?",
+      "authors": "Schurch NJ et al.",
+      "year": 2016,
+      "url": "https://doi.org/10.1261/rna.058339.116",
+      "doi": "10.1261/rna.058339.116",
+      "checked_on": "2026-10-21",
+      "access_level": "metadata_only",
+      "metadata_status": "verified",
+      "supported_claims": [
+        "An associated erratum exists and is linked for completeness."
+      ],
+      "limitations": [
+        "PubMed has no abstract; the erratum content was not accessible in this review, so no specific correction is attributed to it."
+      ],
+      "corrections": [],
+      "journal": "RNA",
+      "volume_issue": "22(10)",
+      "pages_or_article": "1641",
+      "pmid": "27638913",
+      "alternate_urls": [
+        "https://pubmed.ncbi.nlm.nih.gov/27638913/"
+      ]
+    },
+    {
+      "id": "ncbi-codes",
+      "source_type": "official documentation",
+      "title": "Entrez Sequences Help: nucleotide codes",
+      "authors": "National Center for Biotechnology Information.",
+      "year": null,
+      "url": "https://www.ncbi.nlm.nih.gov/sites/books/NBK44863/table/sequencesquickstart.Td/?report=objectonly",
+      "checked_on": "2026-10-21",
+      "access_level": "official_documentation",
+      "metadata_status": "verified",
+      "supported_claims": [
+        "Defines ambiguity-letter alternatives; toolkit uses the DNA subset and excludes U."
+      ],
+      "limitations": [
+        "The table covers more than this project's accepted alphabet."
+      ],
+      "corrections": []
+    },
+    {
+      "id": "ncbi-assembly",
+      "source_type": "official documentation",
+      "title": "NCBI Datasets: genome assembly report",
+      "authors": "National Center for Biotechnology Information.",
+      "year": null,
+      "url": "https://www.ncbi.nlm.nih.gov/datasets/docs/v2/reference-docs/data-reports/genome-assembly/",
+      "checked_on": "2026-10-21",
+      "access_level": "official_documentation",
+      "metadata_status": "verified",
+      "supported_claims": [
+        "N50 is the sequence length at which contigs or scaffolds of that length or greater include half the assembly bases."
+      ],
+      "limitations": [
+        "The project applies the arithmetic to whole input records; it does not reproduce NCBI assembly gap-splitting or validation."
+      ],
+      "corrections": []
+    },
+    {
+      "id": "dna-chapter",
+      "source_type": "official documentation",
+      "title": "The structure and function of DNA, in Molecular Biology of the Cell, 4th edition",
+      "authors": "Alberts B et al.",
+      "year": 2002,
+      "url": "https://www.ncbi.nlm.nih.gov/books/NBK26821/",
+      "checked_on": "2026-10-21",
+      "access_level": "unavailable",
+      "metadata_status": "unresolved",
+      "supported_claims": [
+        "Retained textbook background link for DNA complementarity; current chapter text could not be reopened."
+      ],
+      "limitations": [
+        "NCBI returned a browser-verification screen; this is not a newly completed full-text appraisal."
+      ],
+      "corrections": [],
+      "version": "4th edition"
+    },
+    {
+      "id": "rna-chapter",
+      "source_type": "official documentation",
+      "title": "From DNA to RNA, in Molecular Biology of the Cell, 4th edition",
+      "authors": "Alberts B et al.",
+      "year": 2002,
+      "url": "https://www.ncbi.nlm.nih.gov/books/NBK26887/",
+      "checked_on": "2026-10-21",
+      "access_level": "unavailable",
+      "metadata_status": "unresolved",
+      "supported_claims": [
+        "Retained textbook background link for transcription; current chapter text could not be reopened."
+      ],
+      "limitations": [
+        "NCBI returned a browser-verification screen."
+      ],
+      "corrections": [
+        "Corrected the in-text label from RNA structure to From DNA to RNA."
+      ],
+      "version": "4th edition"
+    },
+    {
+      "id": "ena-run",
+      "source_type": "official documentation",
+      "title": "ERR458493: archived yeast RNA-seq run",
+      "authors": "European Nucleotide Archive; source submitters.",
+      "year": null,
+      "url": "https://www.ebi.ac.uk/ena/browser/view/ERR458493",
+      "checked_on": "2026-10-21",
+      "access_level": "unavailable",
+      "metadata_status": "unresolved",
+      "supported_claims": [
+        "The preserved provenance attributes a single-end yeast RNA-seq run to ERR458493; not independently reconfirmed online in this pass."
+      ],
+      "limitations": [
+        "Live ENA run/API endpoints could not be read in this pass. Bundled provenance and subset hashes were inspected; complete 60 MB input was not downloaded again."
+      ],
+      "corrections": [],
+      "version": "accession ERR458493; metadata recorded 2026-10-20",
+      "alternate_urls": [
+        "https://www.ncbi.nlm.nih.gov/sra/ERR458493",
+        "https://www.ebi.ac.uk/ena/portal/api/filereport?accession=ERR458493&result=read_run&fields=run_accession,scientific_name,library_layout,fastq_ftp,fastq_md5,fastq_bytes&format=tsv",
+        "https://ftp.sra.ebi.ac.uk/vol1/fastq/ERR458/ERR458493/ERR458493.fastq.gz"
+      ]
+    },
+    {
+      "id": "ena-project",
+      "source_type": "official documentation",
+      "title": "PRJEB5348: source RNA-seq project",
+      "authors": "European Nucleotide Archive; source submitters.",
+      "year": null,
+      "url": "https://www.ebi.ac.uk/ena/browser/view/PRJEB5348",
+      "checked_on": "2026-10-21",
+      "access_level": "unavailable",
+      "metadata_status": "unresolved",
+      "supported_claims": [
+        "The preserved provenance connects the run with this project and Schurch et al. (2016); not independently reconfirmed online in this pass."
+      ],
+      "limitations": [
+        "Primary archive pages/API did not return readable metadata in this pass."
+      ],
+      "corrections": [],
+      "version": "accession PRJEB5348",
+      "alternate_urls": [
+        "https://www.ncbi.nlm.nih.gov/bioproject/PRJEB5348"
+      ]
+    },
+    {
+      "id": "ena-format",
+      "source_type": "official documentation",
+      "title": "Archive-generated files",
+      "authors": "European Nucleotide Archive.",
+      "year": null,
+      "url": "https://ena-docs.readthedocs.io/en/latest/retrieval/file-download/archive-generated-files.html",
+      "checked_on": "2026-10-21",
+      "access_level": "official_documentation",
+      "metadata_status": "verified",
+      "supported_claims": [
+        "Archive-generated FASTQ uses Phred ASCII encoding starting at 33; output layouts distinguish application reads."
+      ],
+      "limitations": [
+        "The rule applies to archive-generated files, not every submitted file format."
+      ],
+      "corrections": []
+    },
+    {
+      "id": "ena-download",
+      "source_type": "official documentation",
+      "title": "How to download data files",
+      "authors": "European Nucleotide Archive.",
+      "year": null,
+      "url": "https://ena-docs.readthedocs.io/en/latest/retrieval/file-download.html",
+      "checked_on": "2026-10-21",
+      "access_level": "official_documentation",
+      "metadata_status": "verified",
+      "supported_claims": [
+        "Archive MD5 comparison is advised to check a complete transfer."
+      ],
+      "limitations": [
+        "A checksum comparison is not authentication or biological validation."
+      ],
+      "corrections": []
+    },
+    {
+      "id": "ena-policy",
+      "source_type": "official documentation",
+      "title": "ENA and INSDC policies",
+      "authors": "European Nucleotide Archive; INSDC.",
+      "year": null,
+      "url": "https://ena-browser-docs.readthedocs.io/en/latest/about/policies.html",
+      "checked_on": "2026-10-21",
+      "access_level": "official_documentation",
+      "metadata_status": "verified",
+      "supported_claims": [
+        "Public sequence data have an access/reuse policy and scientific attribution expectations distinct from the project code license.",
+        "The policy distinguishes availability from record accuracy and discusses access/benefit-sharing considerations."
+      ],
+      "limitations": [
+        "Live policy can change; this is a citation to its stated terms, not a legal opinion."
+      ],
+      "corrections": []
+    },
+    {
+      "id": "illumina-format",
+      "source_type": "official documentation",
+      "title": "FASTQ files: BaseSpace Sequence Hub",
+      "authors": "Illumina.",
+      "year": null,
+      "url": "https://help.connected.illumina.com/basespace/files-used-by-basespace/fastq-files",
+      "checked_on": "2026-10-21",
+      "access_level": "official_documentation",
+      "metadata_status": "verified",
+      "supported_claims": [
+        "Describes the instrument/run/flowcell/lane/tile/coordinate and read/filter/control/sample header fields."
+      ],
+      "limitations": [
+        "Toolkit grammar is independently specified and is neither identical to nor exhaustive of every Illumina format."
+      ],
+      "corrections": []
+    },
+    {
+      "id": "illumina-layout",
+      "source_type": "official documentation",
+      "title": "Paired-end vs. single-read sequencing technology",
+      "authors": "Illumina.",
+      "year": null,
+      "url": "https://www.illumina.com/science/technology/next-generation-sequencing/plan-experiments/paired-end-vs-single-read.html",
+      "checked_on": "2026-10-21",
+      "access_level": "official_documentation",
+      "metadata_status": "verified",
+      "supported_claims": [
+        "Paired-end sequencing measures both ends of a fragment."
+      ],
+      "limitations": [
+        "Used only for layout definition, not vendor performance or suitability claims."
+      ],
+      "corrections": []
+    },
+    {
+      "id": "illumina-quality",
+      "source_type": "official documentation",
+      "title": "Sequencing quality scores",
+      "authors": "Illumina.",
+      "year": null,
+      "url": "https://www.illumina.com/science/technology/next-generation-sequencing/plan-experiments/quality-scores.html",
+      "checked_on": "2026-10-21",
+      "access_level": "official_documentation",
+      "metadata_status": "verified",
+      "supported_claims": [
+        "Defines Q = -10 log10(error probability) and Q20/Q30 per-base probability equivalents."
+      ],
+      "limitations": [
+        "Used for the score definition only. Broad vendor wording about perfect reads is not adopted: per-base Q30 does not guarantee an error-free read."
+      ],
+      "corrections": []
+    },
+    {
+      "id": "fastqc-docs",
+      "source_type": "official documentation",
+      "title": "FastQC: what is FastQC?",
+      "authors": "Andrews S.; Babraham Bioinformatics.",
+      "year": null,
+      "url": "https://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/1%20Introduction/1.1%20What%20is%20FastQC.html",
+      "checked_on": "2026-10-21",
+      "access_level": "official_documentation",
+      "metadata_status": "verified",
+      "supported_claims": [
+        "FastQC provides exploratory sequence quality reports and supports interactive or pipeline use."
+      ],
+      "limitations": [
+        "The toolkit does not replicate all modules or claim equivalent output."
+      ],
+      "corrections": [],
+      "alternate_urls": [
+        "https://www.bioinformatics.babraham.ac.uk/projects/fastqc/"
+      ]
+    },
+    {
+      "id": "seqkit-source",
+      "source_type": "official documentation",
+      "title": "SeqKit pair.go",
+      "authors": "Shen W.; SeqKit contributors.",
+      "year": null,
+      "url": "https://github.com/shenwei356/seqkit/blob/c784d97c7e7d941c7fc3f00694044b6844affb4b/seqkit/cmd/pair.go",
+      "checked_on": "2026-10-21",
+      "access_level": "official_documentation",
+      "metadata_status": "verified",
+      "supported_claims": [
+        "Provides pair matching, optional unpaired outputs, and buffering of unmatched identifiers."
+      ],
+      "limitations": [
+        "Named file inspected, not an executed benchmark or complete code review."
+      ],
+      "corrections": [],
+      "version": "commit c784d97c7e7d941c7fc3f00694044b6844affb4b",
+      "alternate_urls": [
+        "https://github.com/shenwei356/seqkit"
+      ]
+    },
+    {
+      "id": "seqkit-guide",
+      "source_type": "official documentation",
+      "title": "SeqKit usage: pair",
+      "authors": "Shen W.; SeqKit contributors.",
+      "year": null,
+      "url": "https://bioinf.shenwei.me/seqkit/usage/#pair",
+      "checked_on": "2026-10-21",
+      "access_level": "official_documentation",
+      "metadata_status": "verified",
+      "supported_claims": [
+        "Documents pair matching, custom ID expressions, and buffering when order differs."
+      ],
+      "limitations": [
+        "Live guide may describe later code than the pinned file."
+      ],
+      "corrections": []
+    },
+    {
+      "id": "seqtk-source",
+      "source_type": "official documentation",
+      "title": "seqtk README",
+      "authors": "Li H.; seqtk contributors.",
+      "year": null,
+      "url": "https://github.com/lh3/seqtk/blob/94e707082d39b0a038f234df676e32d9802c0dc7/README.md",
+      "checked_on": "2026-10-21",
+      "access_level": "official_documentation",
+      "metadata_status": "verified",
+      "supported_claims": [
+        "Documents FASTA/FASTQ transformations and same-seed paired-file subsampling."
+      ],
+      "limitations": [
+        "Documentation inspection only; no execution, copying, or performance comparison."
+      ],
+      "corrections": [],
+      "version": "commit 94e707082d39b0a038f234df676e32d9802c0dc7",
+      "alternate_urls": [
+        "https://github.com/lh3/seqtk"
+      ]
+    },
+    {
+      "id": "fastp-source",
+      "source_type": "official documentation",
+      "title": "fastp README and source revision",
+      "authors": "Chen S.; fastp contributors.",
+      "year": null,
+      "url": "https://github.com/OpenGene/fastp/tree/ee125a52fddae9d8189e13cd8a33ad04988a1351",
+      "checked_on": "2026-10-21",
+      "access_level": "official_documentation",
+      "metadata_status": "verified",
+      "supported_claims": [
+        "README documents preprocessing, reporting, and output-overwrite controls."
+      ],
+      "limitations": [
+        "README reinspected. Version/license claims from earlier records were not re-derived from this file; no execution or equivalent performance test."
+      ],
+      "corrections": [],
+      "version": "commit ee125a52fddae9d8189e13cd8a33ad04988a1351"
+    }
+  ]
+}
