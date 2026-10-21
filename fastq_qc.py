@@ -265,7 +265,14 @@ def write_csv(path: Path, rows: list[dict]) -> None:
     with path.open("w", encoding="utf-8", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=list(rows[0]))
         writer.writeheader()
-        writer.writerows(rows)
+        writer.writerows({key: csv_safe_value(value) for key, value in row.items()} for row in rows)
+
+
+def csv_safe_value(value: object) -> object:
+    """Escape formula-like text only in spreadsheet exports, preserving numbers."""
+    if isinstance(value, str) and value.lstrip(" \t\r\n\v\f\ufeff").startswith(("=", "+", "-", "@")):
+        return "'" + value
+    return value
 
 
 def report_markdown(report: dict) -> str:
