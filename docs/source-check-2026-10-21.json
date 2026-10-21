@@ -1,0 +1,21 @@
+{
+  "date": "2026-10-21",
+  "checks": [
+    {
+      "id": "ena-run",
+      "url": "https://www.ebi.ac.uk/ena/portal/api/filereport?accession=ERR458493&result=read_run&fields=run_accession,study_accession,scientific_name,library_layout,library_strategy,fastq_md5&format=tsv",
+      "access": "official ENA API metadata",
+      "finding": "ERR458493 belongs to PRJEB5348; organism Saccharomyces cerevisiae, SINGLE layout, RNA-Seq. Archive FASTQ MD5 remains 2b8c708cce1fd88e7ddecd51e5ae2154. No full FASTQ was redownloaded."
+    },
+    {
+      "id": "illumina-quality",
+      "url": "https://www.illumina.com/science/technology/next-generation-sequencing/plan-experiments/quality-scores.html",
+      "access": "official Q-score definition/table",
+      "finding": "Q=-10 log10(error probability); Q30 corresponds to an estimated per-base error probability of 0.001. The project correctly avoids equating these scores with counted errors or guaranteed perfect reads."
+    }
+  ],
+  "limits": [
+    "No new systematic literature search or independent biological validation.",
+    "Availability of an archive record does not establish the correctness of its measurements."
+  ]
+}

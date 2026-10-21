@@ -132,6 +132,7 @@ The optional `--input-lock` flag enforces the declared fingerprints within QC an
 | [Assumptions](docs/assumptions.md) | Rationale, checks, and consequences of material assumptions |
 | [Reference audit](docs/reference-audit.json) | Source-by-source verification and access limits |
 | [Scientific and editorial review](docs/review-2026-10-20.md) | Corrections, coverage, and verification results |
+| [Maintenance and source review](docs/review-2026-10-21.md) | Current fixes, source checks, validation, and remaining limits |
 | [Public-data provenance](docs/public-data.md) | Source, extraction, checksums, and reuse terms |
 | [Practical use](docs/practical-use.md) | Input locks, worked use case, and next improvements |
 | [Literature review](docs/literature-review.md) | Bounded review supporting this extension |
