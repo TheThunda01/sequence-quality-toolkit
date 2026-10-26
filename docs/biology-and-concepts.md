@@ -4,7 +4,7 @@ See the [glossary](glossary.md) for a compact vocabulary reference and [assumpti
 
 ## What a sequencing read represents
 
-A read is a sequence reported by a sequencing instrument and its analysis software. In the short-read example here, it covers part of a library molecule, rather than a complete chromosome or gene. DNA sequencing and RNA sequencing therefore produce collections of observations that need additional analysis before they can answer biological questions.
+A read is a sequence reported by a sequencing instrument and its analysis software. The short reads in this example cover parts of library molecules, rather than complete chromosomes or genes. Further analysis is needed to turn these observations into answers to biological questions.
 
 In many RNA-sequencing (RNA-seq) workflows, RNA is represented by complementary DNA, or cDNA, before sequencing. That is why a file from an RNA experiment can use the DNA alphabet, including T, rather than U. Early yeast RNA-seq work illustrates this connection between cDNA reads and transcript measurements ([Nagalakshmi et al., 2008](https://doi.org/10.1126/science.1158441)). A read count is not automatically a molecule count: how the library was prepared, which fragments were sequenced, and how reads are assigned all matter.
 
@@ -18,17 +18,17 @@ This toolkit calculates GC using only A, C, G, and T in the denominator. Ambiguo
 
 ## FASTA, FASTQ, and estimated quality
 
-FASTA associates a sequence with a header. FASTQ also provides a quality score for each sequence position. Matching sequence and quality lengths is therefore a meaningful structural check: without that match, scores cannot be assigned unambiguously to positions.
+FASTA associates a sequence with a header. FASTQ adds a quality score for each sequence position. Sequence and quality lengths must match so each score has an unambiguous position.
 
 Phred quality expresses an estimated base-call error probability ([Illumina, n.d.](references.md#illumina-quality)): $`Q=-10\log_{10}(p)`$. Q20 corresponds to $`p=0.01`$ and Q30 to $`p=0.001`$ under that model. Those are predictions, not observed error frequencies. Calibration can differ across data, and a high score does not establish that a read maps uniquely or comes from the expected organism. Historical FASTQ encodings also differ, which is why the workflow requires an explicit Phred+33 declaration ([Cock et al., 2010](https://doi.org/10.1093/nar/gkp1137)).
 
-The mean of quality scores and the mean of their implied error probabilities answer different questions because the transformation is nonlinear. The reports keep score summaries separate from expected-error calculations rather than treating them as interchangeable evidence.
+Mean quality scores and mean implied error probabilities answer different questions. The transformation between them is nonlinear, so the reports keep score summaries separate from expected-error calculations.
 
 ## Why per-cycle denominators matter
 
-A cycle (read-position) summary groups positions by their order within each read. If one read is 50 bases long and another is 75, both contribute to cycle 40, but only the longer read contributes to cycle 60. Filling the missing position with zero would invent an observation and lower the mean incorrectly.
+A cycle (read-position) summary includes only reads that reach that position. If one read is 50 bases long and another is 75, both contribute to cycle 40, but only the longer read contributes to cycle 60. Filling the missing position with zero would invent an observation and lower the mean incorrectly.
 
-The toolkit therefore reports how many reads reach each position. Changes near the end of a plot can reflect both a change in quality and a change in which reads remain represented. These summaries describe the supplied files; they do not identify the cause of a pattern.
+The toolkit reports this denominator at each position. Changes near the end of a plot can reflect changing quality, different reads contributing, or both. These summaries describe the supplied files; they do not identify the cause of a pattern.
 
 ## Read pairs are not transcripts
 

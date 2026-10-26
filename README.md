@@ -1,6 +1,6 @@
 # Sequence Quality Toolkit
 
-This project asks a practical question: **what can we learn from sequence files before doing biological analysis?** It checks FASTA (sequence-and-header) records against a manifest, a table of expected records, and summarizes FASTQ (sequence, header, and per-position quality) files without changing the reads. The code is small enough to follow, with tests for details that can quietly change a result.
+Sequence Quality Toolkit checks sequence files and summarizes their quality scores before biological analysis. It checks FASTA records (sequences and headers) against a manifest of expected records and separately summarizes FASTQ files, which add a quality score at each position. It leaves reads unchanged. Tests cover file-handling details that can alter a result.
 
 **[Project context: background, purpose, and key themes](docs/project-context.md)**
 
@@ -10,7 +10,7 @@ This project asks a practical question: **what can we learn from sequence files 
 
 ## Why this project
 
-Small file-handling decisions can change what a sequence summary means. This project makes input contracts and metric definitions visible, using a public excerpt and deliberately imperfect synthetic examples.
+File-handling decisions affect sequence summaries. Using a public excerpt and deliberately imperfect synthetic examples, this project shows exactly which inputs each check accepts and how it calculates each metric.
 
 ## What it does
 
@@ -29,7 +29,7 @@ The [synthetic example](reports/fastq_synthetic/report.md) makes low-quality sco
 python fastq_qc.py --manifest examples/fastq/samples.csv --output-dir my-qc-synthetic --dataset-label "Synthetic test reads; no biological origin"
 ```
 
-Each FASTQ manifest row identifies **one file**, with paths relative to the manifest:
+Each row of the FASTQ manifest identifies **one file**. Paths are relative to the manifest:
 
 ```csv
 sample_id,fastq_path,quality_encoding
@@ -37,7 +37,7 @@ sample_A,sample_A.fastq.gz,phred33
 sample_B,sample_B.fastq,phred33
 ```
 
-Sample IDs and resolved input paths must be unique. This quality-summary command analyzes each file independently and does not merge lanes. Use the separate paired-file check below for positional mate consistency. Quality scores that could fit more than one encoding remain the caller's responsibility. Detailed input rules and metric definitions are in the [FASTQ methods](docs/fastq-methods.md) and [data dictionary](docs/fastq-data-dictionary.md).
+Sample IDs and resolved input paths must be unique. The quality-summary command analyzes each file independently and does not merge lanes. To check whether paired records match in order, use the separate paired-file check below. The caller must choose the correct quality encoding, even when scores could fit more than one encoding. See the [FASTQ methods](docs/fastq-methods.md) and [data dictionary](docs/fastq-data-dictionary.md) for input rules and metric definitions.
 
 | Output in the chosen directory | Contents |
 | --- | --- |
@@ -50,7 +50,7 @@ Sample IDs and resolved input paths must be unique. This quality-summary command
 
 ### FASTA and manifest checks
 
-The original workflow remains available, now with separate sample summaries:
+The FASTA workflow reports both pooled and per-sample summaries:
 
 ```sh
 python sequence_qc.py --fasta examples/synthetic_sequences.fasta --manifest examples/manifest.csv --output-dir my-fasta-qc --dataset-label "Synthetic teaching fixture; not observed biological data"
@@ -62,7 +62,7 @@ See the [FASTA report](reports/report.md), [methods](docs/methods.md), and [dict
 
 ### Paired-file consistency
 
-The separate paired FASTQ validator checks equal read counts, matching normalized identifiers in the same order, and explicit R1/R2 mate labels. It accepts plain/gzip input and requires you to select one supported naming convention.
+The paired FASTQ validator checks that files have equal read counts, normalized identifiers match in order, and headers contain explicit R1/R2 mate labels. It accepts plain or gzip input and requires one supported naming convention.
 
 ```sh
 python paired_fastq_check.py --read1 examples/paired/suffix_R1.fastq --read2 examples/paired/suffix_R2.fastq --name-convention suffix --quality-encoding phred33 --sample-id synthetic_suffix --dataset-label "Synthetic paired fixtures; no biological origin" --output-dir my-paired-qc
@@ -100,7 +100,7 @@ The quick start above verifies the included input lock and writes this analysis 
 | Mean Phred score, weighted by bases | 37.015059 |
 | Fraction of bases with Phred score ≥30 | 0.944373 |
 
-These values describe this small prefix. **They are not a quality assessment of the complete run, a measure of observed sequencing errors, or evidence for a biological effect.** We use the archive's organism label; the tool does not verify identity or contamination. The study publication is credited in the provenance guide, but its differential-expression analysis is not reproduced here.
+These values describe only this small prefix. **They do not assess the complete run, measure observed sequencing errors, or establish a biological effect.** The tool uses the archive's organism label without verifying identity or contamination. The provenance guide credits the study publication; this project does not reproduce its differential-expression analysis.
 
 ## Practical use and limitations
 
@@ -112,7 +112,7 @@ The [practical-use guide](docs/practical-use.md) explains how to transfer and ve
 
 ### Integrated input check
 
-The optional `--input-lock` flag enforces the declared fingerprints within QC and checks the raw bytes actually consumed before publishing reports. Without the flag, earlier behavior is preserved. It does not authenticate sample identity or prevent concurrent filesystem changes; see the [updated contract](docs/practical-use.md).
+With `--input-lock`, QC verifies the declared fingerprints and checks the raw bytes it reads before publishing reports. Omitting the flag preserves the existing behavior. The check does not authenticate sample identity or prevent concurrent filesystem changes; see the [updated contract](docs/practical-use.md).
 
 ## Documentation
 

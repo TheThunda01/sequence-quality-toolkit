@@ -4,9 +4,9 @@ FASTA stores a sequence and header; FASTQ adds a quality value at each sequence 
 
 ## Background and rationale
 
-Before asking a biological question with sequencing data, it helps to understand the files themselves. Are the records readable? Do sample labels match the data? What do the read lengths and quality scores look like? FASTQ stores both sequence and estimated base-call quality, and its historical encoding variants make assumptions about those scores important ([Cock et al., 2010](https://doi.org/10.1093/nar/gkp1137)).
+Check the files before interpreting sequencing data. Records must be readable, sample labels must match the data, and quality summaries need clear definitions. FASTQ stores both sequence and estimated base-call quality. Its historical encoding variants make the choice of quality encoding important ([Cock et al., 2010](https://doi.org/10.1093/nar/gkp1137)).
 
-This project makes a small set of those checks visible and reproducible. The aim is to show how a QC calculation works, what information it uses, and where its interpretation stops.
+This project explains a small set of reproducible checks: how each calculation works, which information it uses, and what its result can support.
 
 ## What it does
 
@@ -18,7 +18,7 @@ The examples combine deliberately imperfect synthetic data with a small excerpt 
 
 ## Why it matters
 
-These checks can surface file and metadata problems before they become harder to trace in a larger analysis. Clear denominators also prevent misleading comparisons: a mean across bases differs from a mean across reads, and a sequence position should only include reads that reach it.
+These checks can catch file and metadata problems before a larger analysis makes them harder to trace. Explicit denominators also prevent misleading comparisons. A mean across bases differs from a mean across reads, and a position summary should include only reads that reach that position.
 
 Established tools such as [FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) address a broader range of QC questions. This toolkit is a focused, inspectable learning project, not a replacement for a complete sequencing workflow.
 

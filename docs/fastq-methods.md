@@ -12,7 +12,9 @@ The accepted DNA symbols and GC denominator match the [FASTA methods](methods.md
 
 ## Quality statistics
 
-Q is a base-caller estimate on a logarithmic scale ([Illumina, n.d.](references.md#illumina-quality)): $`Q=-10\log_{10}(p)`$, so its implied error probability is $`p=10^{-Q/10}`$. Per-read expected errors sum those implied probabilities. Linearity of expectation permits this sum without assuming independent errors at different positions. Its interpretation depends on score calibration (agreement between predicted probabilities and observed error frequencies) and is not a counted or experimentally measured error rate. Averaging Q and transforming it back to a probability is not the same as averaging probabilities; both are kept conceptually separate here.
+Q is a base-caller estimate on a logarithmic scale ([Illumina, n.d.](references.md#illumina-quality)): $`Q=-10\log_{10}(p)`$, so its implied error probability is $`p=10^{-Q/10}`$. Per-read expected errors sum those implied probabilities. Linearity of expectation permits this sum without assuming independent errors at different positions.
+
+Expected errors are predictions, not counted or experimentally measured errors. Interpreting them requires calibrated scores: predicted probabilities must agree with observed error frequencies. Averaging Q and transforming it back to a probability also differs from averaging probabilities. The reports keep these calculations separate.
 
 Per-read mean Q averages its base scores. The sample mean Q weights all bases equally, so longer reads contribute more. Q20 and Q30 fractions count bases meeting those score cutoffs. They are summaries, not universal acceptance rules. At cycle k, only reads with length at least k contribute; the output includes that denominator. No sequence position is padded with a score of zero.
 
@@ -20,9 +22,11 @@ Read-length histograms are exact. N counts are a subset of ambiguity counts. Qua
 
 ## Streaming, fingerprints, and outputs
 
-Raw source bytes are hashed while they pass into the parser/decompressor. A gzip fingerprint therefore identifies the compressed file bytes; recompressing identical read content can change that fingerprint. The archive subset also has an uncompressed-content hash in its separate provenance record.
+The program hashes raw source bytes as it reads them into the parser/decompressor. A gzip fingerprint therefore identifies the compressed file bytes; recompressing identical read content can change that fingerprint. The archive subset also has an uncompressed-content hash in its separate provenance record.
 
-Read-level JSON Lines are streamed to a temporary report directory. Memory grows with the longest read, distinct observed lengths, and per-cycle/per-sample summaries rather than with all read records. A million short reads still produce a large per-read output file; budget disk space accordingly. Full input validation completes before temporary outputs replace the named report files. A later file-system error during replacement could leave a partial report set; check the exit status.
+The program streams read-level JSON Lines to a temporary report directory. Memory grows with the longest read, distinct observed lengths, and per-cycle/per-sample summaries rather than with all read records. A million short reads still produce a large per-read output file; budget disk space accordingly.
+
+The program validates every input before replacing the named report files with temporary outputs. A file-system error during replacement could leave a partial report set, so check the exit status.
 
 The quality-summary command treats sample files independently. The separate [paired-file validator](paired-fastq.md) checks positional identifiers and mate labels; neither command establishes whether files are lanes from one library or samples are biological replicates. There is no reference genome and no alignment/mapping-quality calculation. Base-quality summaries do not establish identity, contamination, adapter content, duplication, or function.
 
