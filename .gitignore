@@ -5,3 +5,9 @@ __pycache__/
 .DS_Store
 results_clean/
 tmp/
+
+# Local outputs from the README examples
+/my-qc/
+/my-qc-synthetic/
+/my-fasta-qc/
+/my-paired-qc/

@@ -26,7 +26,7 @@ Small file-handling decisions can change what a sequence summary means. This pro
 The [synthetic example](reports/fastq_synthetic/report.md) makes low-quality scores and variable lengths easier to see:
 
 ```sh
-python fastq_qc.py --manifest examples/fastq/samples.csv --output-dir reports/fastq_synthetic --dataset-label "Synthetic test reads; no biological origin"
+python fastq_qc.py --manifest examples/fastq/samples.csv --output-dir my-qc-synthetic --dataset-label "Synthetic test reads; no biological origin"
 ```
 
 Each FASTQ manifest row identifies **one file**, with paths relative to the manifest:
@@ -53,7 +53,7 @@ Sample IDs and resolved input paths must be unique. This quality-summary command
 The original workflow remains available, now with separate sample summaries:
 
 ```sh
-python sequence_qc.py --fasta examples/synthetic_sequences.fasta --manifest examples/manifest.csv --output-dir reports --dataset-label "Synthetic teaching fixture; not observed biological data"
+python sequence_qc.py --fasta examples/synthetic_sequences.fasta --manifest examples/manifest.csv --output-dir my-fasta-qc --dataset-label "Synthetic teaching fixture; not observed biological data"
 ```
 
 This checks duplicate or empty records, unsupported DNA symbols, and missing/extra manifest IDs. It reports sequence lengths, GC fraction, $`\frac{G+C}{A+C+G+T}`$, with an explicit denominator, ambiguity counts, and pooled **and per-sample** length N50, the record length reached when longest-first records cover at least half the total length. The included FASTA is synthetic: 3 records, 42 symbols, 10 ambiguous symbols. GC is `null` when no A/C/G/T bases are available; it is never silently set to zero.
@@ -65,7 +65,7 @@ See the [FASTA report](reports/report.md), [methods](docs/methods.md), and [dict
 The separate paired FASTQ validator checks equal read counts, matching normalized identifiers in the same order, and explicit R1/R2 mate labels. It accepts plain/gzip input and requires you to select one supported naming convention.
 
 ```sh
-python paired_fastq_check.py --read1 examples/paired/suffix_R1.fastq --read2 examples/paired/suffix_R2.fastq --name-convention suffix --quality-encoding phred33 --sample-id synthetic_suffix --dataset-label "Synthetic paired fixtures; no biological origin" --output-dir reports/paired_suffix
+python paired_fastq_check.py --read1 examples/paired/suffix_R1.fastq --read2 examples/paired/suffix_R2.fastq --name-convention suffix --quality-encoding phred33 --sample-id synthetic_suffix --dataset-label "Synthetic paired fixtures; no biological origin" --output-dir my-paired-qc
 ```
 
 See the [paired-file rules](docs/paired-fastq.md), [example result](reports/paired_suffix/report.md), and [related GitHub tools](docs/related-tools.md). It does not reorder reads, assume reverse-complement relationships, or establish biological pairing. The public yeast excerpt is single-end; paired examples are explicitly synthetic.
@@ -83,18 +83,13 @@ python fastq_qc.py --manifest examples/public/samples.csv --input-lock examples/
 python -m unittest discover -s tests -v
 ```
 
+The analysis examples above and the quick start write fresh results to `my-*` directories, preserving the committed examples under `reports/`. Use a new output directory for another run; existing report files in the chosen directory are replaced after validation.
+
 ## Example results
 
 The repository includes the first **1,000 reads** from [ENA run ERR458493](https://www.ebi.ac.uk/ena/browser/view/ERR458493), part of the *Saccharomyces cerevisiae* study [PRJEB5348](https://www.ncbi.nlm.nih.gov/bioproject/PRJEB5348). The complete source download was verified against its archive MD5 before the subset was created. Selection, checksums, source links, and reuse terms are in [public-data provenance](docs/public-data.md).
 
-From the repository root, run:
-
-```sh
-python fastq_qc.py --manifest examples/public/samples.csv --output-dir reports/fastq_public --dataset-label "First 1000 archived reads of yeast RNA-seq run ERR458493; convenience prefix, not representative"
-python -m unittest discover -s tests -v
-```
-
-Use `python3` if that is your Python command. No installation or download is needed for this example. You can inspect the checked-in [report](reports/fastq_public/report.md) before running anything.
+The quick start above verifies the included input lock and writes this analysis to `my-qc/`. Use `python3` if that is your Python command. No third-party installation or download is needed for this example. You can inspect the checked-in [report](reports/fastq_public/report.md) before running anything.
 
 | Result from the included subset | Value |
 | --- | ---: |
@@ -146,6 +141,6 @@ make test
 make demo
 ```
 
-`make demo` regenerates all five report sets without downloading data. The GitHub Actions workflow specifies continuous integration checks that run the tests and verifies that regenerated reports match the committed results. To rebuild the public subset itself, use [the documented retrieval script](docs/public-data.md); that optional step downloads about 60 MB and validates the complete archive before extracting 1,000 reads.
+`make demo` intentionally regenerates all five committed report sets under `reports/` without downloading data. The GitHub Actions workflow specifies continuous integration checks that run the tests and verify that regenerated reports match the committed results. To rebuild the public subset itself, use [the documented retrieval script](docs/public-data.md); that optional step downloads about 60 MB and validates the complete archive before extracting 1,000 reads.
 
 The input-lock format has schema version 1.0. Existing scientific reports and toolkit calculation versions are retained. `make audit` checks the public input lock. See [CONTRIBUTING.md](CONTRIBUTING.md) for contributions and implementation provenance.
