@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "dataset_label": "Synthetic test reads; no biological origin",
+  "sources": [
+    {
+      "name": "report.json",
+      "sha256": "7a36e682debbb0a04131a33919ed13e659fa455ca54aaaf79ca8a6b26b379fbb"
+    },
+    {
+      "name": "cycles.csv",
+      "sha256": "7c683a63464b1d1dfa6c3001890bcdc253e61f2fb036ecc6071c94ae504f7716"
+    }
+  ],
+  "matplotlib_version": "3.11.2",
+  "samples": [
+    {
+      "sample_id": "toy_sample_A",
+      "cycles": 8,
+      "first_cycle_reads": 3,
+      "last_cycle_reads": 1
+    },
+    {
+      "sample_id": "toy_sample_B",
+      "cycles": 6,
+      "first_cycle_reads": 2,
+      "last_cycle_reads": 1
+    }
+  ],
+  "scope": "Visualization of saved summaries; no new QC, error-rate measurement, or biological inference."
+}

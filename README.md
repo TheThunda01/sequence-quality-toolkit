@@ -87,6 +87,8 @@ The analysis examples above and the quick start write fresh results to `my-*` di
 
 ## Example results
 
+The [quality-and-denominator view](docs/quality-visualization.md) puts each position's mean score beside the number of reads that contribute. Its editable SVGs and reproducible plotting script expose changing denominators without changing the QC calculations.
+
 The repository includes the first **1,000 reads** from [ENA run ERR458493](https://www.ebi.ac.uk/ena/browser/view/ERR458493), part of the *Saccharomyces cerevisiae* study [PRJEB5348](https://www.ncbi.nlm.nih.gov/bioproject/PRJEB5348). The complete source download was verified against its archive MD5 before the subset was created. Selection, checksums, source links, and reuse terms are in [public-data provenance](docs/public-data.md).
 
 The quick start above verifies the included input lock and writes this analysis to `my-qc/`. Use `python3` if that is your Python command. No third-party installation or download is needed for this example. You can inspect the checked-in [report](reports/fastq_public/report.md) before running anything.
