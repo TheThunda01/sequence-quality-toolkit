@@ -10,6 +10,8 @@ Sequence Quality Toolkit checks sequence files and summarizes their quality scor
 
 ## Why this project
 
+This is a measurement foundation for [From biological measurements to better experiments](https://github.com/TheThunda01/TheThunda01/blob/main/PROJECT_GUIDE.md): establish which sequence records and quality summaries can be inspected before interpreting a biological pattern. File integrity and clear denominators support the portfolio’s later questions about models and observations.
+
 File-handling decisions affect sequence summaries. Using a public excerpt and deliberately imperfect synthetic examples, this project shows exactly which inputs each check accepts and how it calculates each metric.
 
 ## What it does

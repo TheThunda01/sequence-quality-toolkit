@@ -2,6 +2,10 @@
 
 FASTA stores a sequence and header; FASTQ adds a quality value at each sequence position. Quality control (QC) here means checking these files and summarizing their declared measurements.
 
+## Where this fits
+
+[Pasilla expression QC](https://github.com/TheThunda01/pasilla-expression-qc) continues the measurement-quality theme with count tables, sample labels, and normalization. Read it after this toolkit to see how checks change with the type of measurement. Its fruit-fly counts are separate from this toolkit’s yeast-read example; the projects do not form one sequencing pipeline. Return to the [portfolio guide](https://github.com/TheThunda01/TheThunda01/blob/main/PROJECT_GUIDE.md).
+
 ## Background and rationale
 
 Check the files before interpreting sequencing data. Records must be readable, sample labels must match the data, and quality summaries need clear definitions. FASTQ stores both sequence and estimated base-call quality. Its historical encoding variants make the choice of quality encoding important ([Cock et al., 2010](https://doi.org/10.1093/nar/gkp1137)).
