@@ -6,7 +6,44 @@ import csv
 import hashlib
 import json
 import math
+import os
 from pathlib import Path
+import tempfile
+
+ROOT = Path(__file__).resolve().parents[1]
+OUTPUT_NAMES = ("cycle-context.svg", "cycle-context.png", "provenance.json")
+SCOPE = "Visualization of saved summaries; no new QC, error-rate measurement, or biological inference."
+
+
+def _is_link(path: Path) -> bool:
+    return path.is_symlink() or (hasattr(path, "is_junction") and path.is_junction())
+
+
+def validate_output(directory: Path, output: Path) -> Path:
+    """Regenerate only this plot's files; preserve source and unrelated records."""
+    output = Path(output).absolute()
+    if any(_is_link(path) for path in (output, *output.parents)):
+        raise ValueError("Output directory and ancestors must not be symlinks or junctions")
+    output = output.resolve()
+    protected = (Path(directory).resolve(), ROOT / "examples", ROOT / "reports", ROOT / "data")
+    if output == ROOT or any(output == path or path in output.parents for path in protected):
+        raise ValueError("Output must be outside input reports and source-data directories")
+    if output.exists() and not output.is_dir():
+        raise ValueError("Output must be a directory")
+    for name in OUTPUT_NAMES:
+        target = output / name
+        if _is_link(target) or (target.exists() and not target.is_file()):
+            raise ValueError("Generated files must not be links or nonregular files")
+    if any((output / name).exists() for name in OUTPUT_NAMES):
+        try:
+            record = json.loads((output / "provenance.json").read_text(encoding="utf-8"))
+            owns_outputs = (record.get("schema_version") == 1 and record.get("scope") == SCOPE
+                            and {source["name"] for source in record["sources"]} == {"report.json", "cycles.csv"})
+        except (OSError, ValueError, TypeError, KeyError, AttributeError):
+            owns_outputs = False
+        if not owns_outputs:
+            raise ValueError("Existing files are not a recognized cycle-context export; choose another directory")
+    return output
 
 
 def load_summary(directory: Path) -> tuple[dict, dict[str, list[dict]]]:
@@ -48,6 +85,7 @@ def load_summary(directory: Path) -> tuple[dict, dict[str, list[dict]]]:
 
 
 def render(directory: Path, output: Path) -> None:
+    output = validate_output(directory, output)
     report, rows = load_summary(directory)
     import matplotlib
     matplotlib.use("Agg")
@@ -79,11 +117,6 @@ def render(directory: Path, output: Path) -> None:
     figure.suptitle("Quality and its changing denominator", weight="bold", fontsize=16)
     axes[0].set_title(report["dataset_label"], fontsize=10, pad=13)
     figure.supxlabel("Only reads reaching a position contribute. A higher mean may reflect a different set of reads.", fontsize=9)
-    output.mkdir(parents=True, exist_ok=True)
-    for suffix in ("svg", "png"):
-        figure.savefig(output / f"cycle-context.{suffix}", dpi=160,
-                       metadata={"Date": None} if suffix == "svg" else None)
-    plt.close(figure)
     provenance = {
         "schema_version": 1, "dataset_label": report["dataset_label"],
         "sources": [{"name": name, "sha256": hashlib.sha256((directory / name).read_bytes()).hexdigest()}
@@ -92,9 +125,23 @@ def render(directory: Path, output: Path) -> None:
         "samples": [{"sample_id": key, "cycles": len(data),
                      "first_cycle_reads": data[0]["observed_bases"], "last_cycle_reads": data[-1]["observed_bases"]}
                     for key, data in rows.items()],
-        "scope": "Visualization of saved summaries; no new QC, error-rate measurement, or biological inference.",
+        "scope": SCOPE,
     }
-    (output / "provenance.json").write_text(json.dumps(provenance, indent=2) + "\n", encoding="utf-8")
+    output.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        with tempfile.TemporaryDirectory(prefix=".cycle_context_", dir=output.parent) as temporary:
+            stage = Path(temporary)
+            for suffix in ("svg", "png"):
+                figure.savefig(stage / f"cycle-context.{suffix}", dpi=160,
+                               metadata={"Date": None} if suffix == "svg" else None)
+            (stage / "provenance.json").write_text(json.dumps(provenance, indent=2) + "\n", encoding="utf-8")
+            validate_output(directory, output)
+            output.mkdir(parents=True, exist_ok=True)
+            for name in OUTPUT_NAMES:
+                # Replace directory entries, never write through a prior hard link.
+                os.replace(stage / name, output / name)
+    finally:
+        plt.close(figure)
 
 
 def main() -> None:
