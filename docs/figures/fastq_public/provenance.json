@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "dataset_label": "First 1000 archived reads of yeast RNA-seq run ERR458493; convenience prefix, not representative",
+  "sources": [
+    {
+      "name": "report.json",
+      "sha256": "4d58d4481f7830ace9e8fb9cd46e4833d9dc3baaaff8440ff269378312c1bb73"
+    },
+    {
+      "name": "cycles.csv",
+      "sha256": "be73bc0891da5b70dc26f1e9df391b2f02a7bd82613c298790edde451d0f9c6c"
+    }
+  ],
+  "matplotlib_version": "3.11.2",
+  "samples": [
+    {
+      "sample_id": "ERR458493_prefix",
+      "cycles": 51,
+      "first_cycle_reads": 1000,
+      "last_cycle_reads": 1000
+    }
+  ],
+  "scope": "Visualization of saved summaries; no new QC, error-rate measurement, or biological inference."
+}

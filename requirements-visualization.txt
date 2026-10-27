@@ -1,0 +1,2 @@
+# Optional figure generation only; the QC commands remain standard-library-only.
+matplotlib==3.11.2

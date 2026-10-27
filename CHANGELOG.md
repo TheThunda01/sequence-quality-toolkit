@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased — October 27, 2026
+
+- Added optional reproducible SVG/PNG views pairing per-cycle mean quality with contributing-read counts, using saved public and synthetic summaries.
+- Reject mismatched cycle identities, denominators, nonfinite quality values, and inconsistent weighted means before plotting. Core QC remains standard-library-only.
+- Preserve the two plotted report JSON files byte-for-byte on Windows so figure provenance matches the repository inputs.
+
 ## 0.3.0
 
 - Added a separate paired FASTQ consistency validator with explicit suffix/Illumina name rules, raw-input hashes, and synthetic examples.
