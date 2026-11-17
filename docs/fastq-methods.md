@@ -24,7 +24,7 @@ Read-length histograms are exact. N counts are a subset of ambiguity counts. Qua
 
 The program hashes raw source bytes as it reads them into the parser/decompressor. A gzip fingerprint therefore identifies the compressed file bytes; recompressing identical read content can change that fingerprint. The archive subset also has an uncompressed-content hash in its separate provenance record.
 
-The program streams read-level JSON Lines to a temporary report directory. Memory grows with the longest read, distinct observed lengths, and per-cycle/per-sample summaries rather than with all read records. A million short reads still produce a large per-read output file; budget disk space accordingly.
+The program streams read-level JSON Lines to a temporary report directory. Memory grows with the longest read, distinct observed lengths, and per-cycle/per-sample summaries rather than with all read records. For large inputs, `--summary-only` skips the per-read calculations and JSON Lines output. Input validation, input-lock checks and aggregate statistics still cover every record.
 
 The program validates every input before replacing the named report files with temporary outputs. A file-system error during replacement could leave a partial report set, so check the exit status.
 

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import argparse
 from collections import Counter
-from contextlib import contextmanager
+from contextlib import contextmanager, nullcontext
 import csv
 from dataclasses import dataclass, field
 import gzip
@@ -23,7 +23,9 @@ from sequence_qc import ALPHABET, CANONICAL, ValidationError, fraction, valid_id
 
 VERSION = "0.3.0"
 MAX_READ_LENGTH = 1_000_000
-OUTPUT_NAMES = ("report.json", "report.md", "samples.csv", "cycles.csv", "length_distribution.csv", "read_metrics.jsonl")
+SUMMARY_NAMES = ("report.json", "report.md", "samples.csv", "cycles.csv", "length_distribution.csv")
+READ_METRICS = "read_metrics.jsonl"
+OUTPUT_NAMES = (*SUMMARY_NAMES, READ_METRICS)
 
 
 @dataclass(frozen=True)
@@ -195,15 +197,16 @@ def read_metrics(record: FastqRecord) -> dict:
     }
 
 
-def process_sample(sample: SampleInput, reads_handle: TextIO) -> tuple[dict, list[dict], list[dict]]:
+def process_sample(sample: SampleInput, reads_handle: TextIO | None) -> tuple[dict, list[dict], list[dict]]:
     lengths, symbols, quality_hist = Counter(), Counter(), Counter()
     # Only fixed-size counters per observed cycle are retained, not reads.
     cycles: list[dict] = []
     count = 0
     with open_fastq(sample.path) as (handle, digest, compressed):
         for count, record in enumerate(iter_fastq(handle), 1):
-            metrics = read_metrics(record)
-            reads_handle.write(json.dumps({"sample_id": sample.sample_id, "read_index": count, **metrics}, sort_keys=True, allow_nan=False) + "\n")
+            if reads_handle is not None:
+                metrics = read_metrics(record)
+                reads_handle.write(json.dumps({"sample_id": sample.sample_id, "read_index": count, **metrics}, sort_keys=True, allow_nan=False) + "\n")
             lengths[len(record.sequence)] += 1
             symbols.update(record.sequence)
             qualities = [ord(char) - 33 for char in record.quality]
@@ -282,13 +285,16 @@ def report_markdown(report: dict) -> str:
              "| --- | ---: | ---: | ---: | ---: | ---: |"]
     for sample in report["samples"]:
         lines.append(f"| {sample['sample_id']} | {sample['read_count']} | {sample['total_bases']} | {sample['base_weighted_mean_phred']:.3f} | {sample['q30_fraction']:.4f} | {sample['n_fraction']:.4f} |")
+    read_output = ("Summary-only run. Sample-level values in " if report.get("summary_only")
+                   else "Read-level results are in `read_metrics.jsonl`; sample-level values in ")
     lines.extend(["", "Q20 and Q30 are descriptive score thresholds, not validated acceptance rules. Quality scores are base-caller estimates; they do not measure alignment quality, contamination, organism identity, or biological function.", "",
                   "Cycle summaries use only reads reaching that cycle. These outputs describe the provided files, not an entire experiment unless those files are complete and appropriately selected.", "",
-                  "Read-level results are in `read_metrics.jsonl`; sample-level values in `samples.csv`; per-cycle summaries in `cycles.csv`; exact length counts in `length_distribution.csv`. Input fingerprints and quality histograms are in `report.json`.", ""])
+                  read_output + "`samples.csv`; per-cycle summaries in `cycles.csv`; exact length counts in `length_distribution.csv`. Input fingerprints and quality histograms are in `report.json`.", ""])
     return "\n".join(lines)
 
 
-def run(manifest_path: Path, output_dir: Path, dataset_label: str, input_lock: Path | None = None) -> dict:
+def run(manifest_path: Path, output_dir: Path, dataset_label: str, input_lock: Path | None = None,
+        *, summary_only: bool = False) -> dict:
     locked = None
     if input_lock is not None:
         # Local import avoids a module cycle: the standalone lock tool uses our parser.
@@ -307,7 +313,8 @@ def run(manifest_path: Path, output_dir: Path, dataset_label: str, input_lock: P
     with tempfile.TemporaryDirectory(prefix=".fastq_qc_", dir=output_dir.parent) as temp:
         staging = Path(temp)
         summaries, cycles, lengths = [], [], []
-        with (staging / "read_metrics.jsonl").open("w", encoding="utf-8") as reads_handle:
+        read_output = nullcontext(None) if summary_only else (staging / READ_METRICS).open("w", encoding="utf-8")
+        with read_output as reads_handle:
             for sample in samples:
                 summary, cycle_rows, length_rows = process_sample(sample, reads_handle)
                 summaries.append(summary)
@@ -332,6 +339,8 @@ def run(manifest_path: Path, output_dir: Path, dataset_label: str, input_lock: P
             "max_read_length": MAX_READ_LENGTH,
             "samples": summaries,
         }
+        if summary_only:
+            report["summary_only"] = True
         if locked is not None:
             report['input_lock'] = {
                 'name': Path(input_lock).name,
@@ -346,7 +355,10 @@ def run(manifest_path: Path, output_dir: Path, dataset_label: str, input_lock: P
         write_csv(staging / "cycles.csv", cycles)
         write_csv(staging / "length_distribution.csv", lengths)
         output_dir.mkdir(parents=True, exist_ok=True)
-        for name in OUTPUT_NAMES:
+        names = SUMMARY_NAMES if summary_only else OUTPUT_NAMES
+        if summary_only:
+            (output_dir / READ_METRICS).unlink(missing_ok=True)
+        for name in names:
             os.replace(staging / name, output_dir / name)
     return report
 
@@ -357,10 +369,11 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--dataset-label", default="Unspecified inputs; source not independently verified")
     parser.add_argument("--input-lock", type=Path, help="Require a matching fingerprint lock before publishing QC outputs")
+    parser.add_argument("--summary-only", action="store_true", help="Write aggregate reports and skip the per-read JSON Lines file")
     parser.add_argument("--version", action="version", version=VERSION)
     args = parser.parse_args(argv)
     try:
-        report = run(args.manifest, args.output_dir, args.dataset_label, args.input_lock)
+        report = run(args.manifest, args.output_dir, args.dataset_label, args.input_lock, summary_only=args.summary_only)
     except (ValueError, OSError, UnicodeError, csv.Error, EOFError, zlib.error) as error:
         print(f"Input/output error: {error}", file=sys.stderr)
         return 2

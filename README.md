@@ -1,18 +1,14 @@
 # Sequence Quality Toolkit
 
-Sequence Quality Toolkit checks sequence files and summarizes their quality scores before biological analysis. It checks FASTA records (sequences and headers) against a manifest of expected records and separately summarizes FASTQ files, which add a quality score at each position. It leaves reads unchanged. Tests cover file-handling details that can alter a result.
-
-**[Project context: background, purpose, and key themes](docs/project-context.md)**
-
-**[Biology and concepts: reads, quality scores, pairs, and interpretation](docs/biology-and-concepts.md)**
-
-**Version 0.3.0:** working educational software with a real public yeast RNA-sequencing (RNA-seq) example and deliberately imperfect synthetic fixtures. Python 3.12; standard library only; no network access during QC.
+Inspect base quality, read lengths and coverage by position in a FASTQ file. The toolkit also checks FASTA records against a manifest and verifies paired-file names and order. The bundled examples run offline with Python 3.12 and its standard library.
 
 ## Why this project
 
-This is a measurement foundation for [From biological measurements to better experiments](https://github.com/TheThunda01/TheThunda01/blob/main/PROJECT_GUIDE.md): establish which sequence records and quality summaries can be inspected before interpreting a biological pattern. File integrity and clear denominators support the portfolio’s later questions about models and observations.
+![In synthetic sample A, the mean score rises as coverage drops from three reads to one](docs/figures/fastq_synthetic/cycle-context.svg)
 
-File-handling decisions affect sequence summaries. Using a public excerpt and deliberately imperfect synthetic examples, this project shows exactly which inputs each check accepts and how it calculates each metric.
+In this synthetic example, only one read reaches the final positions in sample A. The higher average score at the end reflects a different set of contributing reads. [Read the figure with its denominators](docs/quality-visualization.md)
+
+[Run the public yeast example](#quick-start) · [Inspect the sample report](reports/fastq_public/report.md) · [Look up the metrics](docs/fastq-data-dictionary.md) · [Portfolio guide](https://github.com/TheThunda01/TheThunda01/blob/main/PROJECT_GUIDE.md)
 
 ## What it does
 
@@ -48,7 +44,7 @@ Sample IDs and resolved input paths must be unique. The quality-summary command 
 | `samples.csv` | One row per manifest file. |
 | `cycles.csv` | Per-position summaries, using only reads that reach each position. |
 | `length_distribution.csv` | Exact counts of reads at each length. |
-| `read_metrics.jsonl` | One JSON object per read; this can be large for complete runs. |
+| `read_metrics.jsonl` | One JSON object per read. Use `--summary-only` to skip this file. |
 
 ### FASTA and manifest checks
 
@@ -86,6 +82,8 @@ python -m unittest discover -s tests -v
 ```
 
 The analysis examples above and the quick start write fresh results to `my-*` directories, preserving the committed examples under `reports/`. Use a new output directory for another run; existing report files in the chosen directory are replaced after validation.
+
+For a large run, add `--summary-only` to the FASTQ command. You get the same sample statistics, cycle and length tables, and input fingerprints. A successful run removes an older `read_metrics.jsonl` from the chosen output directory.
 
 ## Example results
 
