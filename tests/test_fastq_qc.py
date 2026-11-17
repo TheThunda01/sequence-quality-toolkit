@@ -180,6 +180,24 @@ class PublicExampleTests(unittest.TestCase):
         self.assertEqual(records[0].read_id, metadata["first_read_id"])
         self.assertEqual(records[-1].read_id, metadata["last_read_id"])
 
+    def test_summary_only_preserves_public_metrics_and_replaces_old_detail(self):
+        root = Path(__file__).resolve().parents[1] / "examples/public"
+        with tempfile.TemporaryDirectory() as temp:
+            output = Path(temp)
+            full = fq.run(root / "samples.csv", output, "public prefix", root / "input-lock.json")
+            csvs = {path.name: path.read_bytes() for path in output.glob("*.csv")}
+            self.assertTrue((output / "read_metrics.jsonl").is_file())
+            with contextlib.redirect_stdout(io.StringIO()):
+                code = fq.main(["--manifest", str(root / "samples.csv"), "--input-lock", str(root / "input-lock.json"),
+                                "--output-dir", str(output), "--dataset-label", "public prefix", "--summary-only"])
+            self.assertEqual(code, 0)
+            summary = json.loads((output / "report.json").read_text())
+            self.assertTrue(summary.pop("summary_only"))
+            self.assertEqual(summary, full)
+            self.assertEqual(csvs, {path.name: path.read_bytes() for path in output.glob("*.csv")})
+            self.assertFalse((output / "read_metrics.jsonl").exists())
+            self.assertNotIn("read_metrics.jsonl", (output / "report.md").read_text())
+
     def test_retrieval_script_rejects_changed_source(self):
         root = Path(__file__).resolve().parents[1]
         spec = importlib.util.spec_from_file_location("fetch_public_example", root / "scripts/fetch_public_example.py")
