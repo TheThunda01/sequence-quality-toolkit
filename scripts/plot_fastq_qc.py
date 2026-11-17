@@ -94,27 +94,38 @@ def render(directory: Path, output: Path) -> None:
 
     plt.rcParams.update({"font.family": "DejaVu Sans", "font.size": 11,
                          "svg.fonttype": "none", "svg.hashsalt": "fastq-cycle-context-v1"})
-    figure, axes = plt.subplots(2, 1, figsize=(9.5, 6.3), sharex=True,
-                               gridspec_kw={"height_ratios": [1.6, 1]}, layout="constrained")
-    colors = plt.get_cmap("tab10")
+    figure, axes = plt.subplots(1 + len(rows), 1, figsize=(9.5, 4 + 1.8 * len(rows)),
+                               sharex=True, layout="constrained",
+                               gridspec_kw={"height_ratios": [2, *([1] * len(rows))]})
+    palette = ["#116888", "#a3481b", "#446538", "#76518b"]
+    markers = ["o", "s", "^", "D"]
+    max_reads = max(data[0]["observed_bases"] for data in rows.values())
     for index, (sample_id, data) in enumerate(rows.items()):
-        x = [row["cycle"] for row in data]
-        axes[0].plot(x, [row["mean_phred"] for row in data], marker="o", markersize=3,
-                     label=sample_id, color=colors(index % 10))
-        axes[1].step(x, [row["observed_bases"] for row in data], where="mid", label=sample_id,
-                     color=colors(index % 10), linewidth=2)
-    axes[0].set(ylabel="Mean Phred score", ylim=(0, 45))
+        positions = [row["cycle"] for row in data]
+        counts = [row["observed_bases"] for row in data]
+        color = palette[index % len(palette)]
+        axes[0].plot(positions, [row["mean_phred"] for row in data],
+                     marker=markers[index % len(markers)], markersize=3.5,
+                     label=sample_id, color=color)
+        axis = axes[index + 1]
+        axis.step(positions, counts, where="mid", color=color, linewidth=2)
+        axis.scatter([positions[0], positions[-1]], [counts[0], counts[-1]], color=color, s=26)
+        if counts[0] == counts[-1]:
+            count_label = f"{counts[0]:,} contributing at every position"
+        else:
+            count_label = f"{counts[0]:,} at position 1  →  {counts[-1]:,} at position {positions[-1]}"
+        axis.set_title(f"{sample_id}   |   {count_label}", loc="left", fontsize=10)
+        axis.set(ylabel="Reads", ylim=(0, max_reads * 1.16))
+        axis.yaxis.set_major_locator(MaxNLocator(nbins=4, integer=True))
     maximum = max(row["mean_phred"] for data in rows.values() for row in data)
-    if maximum > 43:
-        axes[0].set_ylim(0, maximum + 2)
+    axes[0].set(ylabel="Mean Phred score", ylim=(0, max(45, maximum + 2)))
     axes[0].legend(loc="best", frameon=False)
-    axes[1].set(xlabel="Read position (1-based)", ylabel="Contributing reads", ylim=(0, None))
-    axes[1].yaxis.set_major_locator(MaxNLocator(integer=True))
-    axes[1].xaxis.set_major_locator(MaxNLocator(integer=True))
+    axes[-1].set_xlabel("Read position (1-based)")
+    axes[-1].xaxis.set_major_locator(MaxNLocator(integer=True))
     for axis in axes:
         axis.grid(axis="y", alpha=0.2)
         axis.spines[["top", "right"]].set_visible(False)
-    figure.suptitle("Quality and its changing denominator", weight="bold", fontsize=16)
+    figure.suptitle("How many reads contribute to each quality score?", weight="bold", fontsize=16)
     axes[0].set_title(report["dataset_label"], fontsize=10, pad=13)
     figure.supxlabel("Only reads reaching a position contribute. A higher mean may reflect a different set of reads.", fontsize=9)
     provenance = {

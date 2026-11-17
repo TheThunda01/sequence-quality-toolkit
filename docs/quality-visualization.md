@@ -1,6 +1,6 @@
 # Read quality with its denominator
 
-Per-position means use only reads long enough to reach that position. The synthetic example demonstrates why the denominator belongs beside the quality curve: sample A falls from three contributing reads to one, while its mean Phred score rises. This does not show that the same reads improved.
+Per-position means use only reads long enough to reach that position. The synthetic example demonstrates why the denominator belongs beside the quality curve: sample A falls from three contributing reads to one, while its mean Phred score rises. Each sample has a separate coverage panel on the same vertical scale. The panel header shows the first and last denominators, so shorter reads dropping out remain visible even where sample curves coincide.
 
 ![Synthetic quality and contributing-read counts](figures/fastq_synthetic/cycle-context.svg)
 
